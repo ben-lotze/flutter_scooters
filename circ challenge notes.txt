@@ -1,0 +1,89 @@
+
+
+
+----- Features: -----
+- Barcode Scanner on cenetr button --> must not do something useful 
+	-> just scan some barcodes/QR and show data (if necessary: provide some picures that can be scanned)
+	- i.e. QR codes that simulate numbers from scooters (encode: id, name, description)
+	- then: simulate unlock (simple, no auth)
+	- Hihi: wenn jemand einen Barcode scannt, der NICHT in der Nähe ist --> Fehlermeldung:
+	  "You may have encountered an error. The scooter you just scanned is around 2 km away from you current position. Not sure how you did that."
+	  --> in reality: misuse potential? just silently assume that the roller is there and was scanned? log this to central service
+
+batteryLevel -> show already on map (next to or visualized inside pin) -> pin icon available as location...
+- reasoning: important information --> no need to click on 
+- even better: do not include scooters that will not be sufficient to reach destination in route search result (optional, )
+	-> changing roller costs at the moment -> in future: could allow switching scooters without extra costs to allow longer rides (and make more money?)
+
+Reserviern
+- sinnvoll für Routen (von/nach) -> schon mal reservieren wegen Fußweg
+- "will be reserved for 15 minutes starting now"
+- show countdown on pin + somewhere else in user stuff
+- 
+
+
+UI
+- OHNE SafeArea -> immer korrekte Ausrichtung der Buttons
+- Markers
+	- wie in Google Anleitung
+	- kein Hint-Poptup -> Card unten am Bildschirm
+	- Pin umfärben -> wie? sind alle in Map mit K=rollerId (als inline comment am Ende der Zeile! "// K=scooterId")
+
+
+IDEEN
+- Eigene db Klasse für mehr Roller? --> ggf. mit HttpServer und eigener Rest-API --> aber das wäre schon etwas Arbeit und ist nicht verlangt!
+
+
+---- TODO: ----
+- text for submission: featues, screenshots and design decisions are all in the readme file on github (github repository start page)
+- readme in github! features, screenshots, design decisions
+- Gradle update
+- git
+- version resolution in gradle -> notwendig? kürzer?
+- search for best practices in challenge apps 
+	- how to stand out?
+	- things they expect that are not obvious?
+- Test in Android and iOS!
+- Maps API: Key restrictions? (currently none) -> JA, GOogle empfiehlt das
+	https://developers.google.com/maps/documentation/android-sdk/get-api-key
+	https://developers.google.com/maps/documentation/ios-sdk/get-api-key
+
+- ios/Runner/AppDelegate.swift --> momentan Maps UND Places Api drin --> ggf. Places entfernen, falls ich das nicht nutze
+
+
+
+location -> is there a class? or do my own? 
+latitude
+longitude
+-> no, just
+
+CircApi
+vehicles
+.search(longitude, latitude, maxDistance)	// distance: is there a class? like Duration? -> otehrwise make my own --> look in Duration how to to calculations
+.get(id)
+.add(Vehicle)
+.update(Vehicle)		???
+.update(id, {param1, param2, ...})
+
+--> maybe add them and throw not implemented yet Exceptions?
+
+db?
+
+
+jokes?
+ # TODO: Show them that I am an amazing developer.
+ or:
+ # DONE: Show them that I am an amazing developer.
+
+
+
+SOMe observations about the Android app:
+- asked me a 2nd time (AGB etc), after activated on emulator?
+
+
+
+Some design decisions
+* Two API keys, to use restrictions
+* decided to use geolocator instead of location package (seemed like more active devlopment)
+	* migrated to androidx to use this plugin
+* permissions --> in manifest and need to be granted on runtime
