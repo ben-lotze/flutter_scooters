@@ -25,7 +25,9 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   google_maps_flutter: ^0.5.21+8
+  flutter_google_places: ^0.2.3
   geolocator: ^5.1.4+2
+
   provider: ^3.1.0+1
   rxdart: ^0.22.2
 
@@ -80,3 +82,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+  assets:
+    - assets/icons/

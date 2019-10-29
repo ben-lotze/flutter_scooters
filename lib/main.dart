@@ -1,7 +1,9 @@
-import 'package:circ_flutter_challenge/map_screen.dart';
+import 'package:circ_flutter_challenge/screens/map_screen/map_screen.dart';
+import 'package:circ_flutter_challenge/screens/test.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
+//void main() => runApp(new MyAppBarTest());
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
