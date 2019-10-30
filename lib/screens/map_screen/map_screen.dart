@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:circ_flutter_challenge/blocs/CircApi.dart';
+import 'package:circ_flutter_challenge/blocs/circ_api.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,16 +13,17 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  GoogleMapController mapController;
+  GoogleMapController _mapController;
 
   Set<Marker> _markers;
-  LatLng _center = const LatLng(45.521563, -122.677433);
+  LatLng _currentMapCenter = const LatLng(45.521563, -122.677433);
   MapType _mapType = MapType.normal;
+
   BuildContext _context;
 
 
   void _onMapCreated(GoogleMapController controller) async {
-    mapController = controller;
+    _mapController = controller;
 
     List<Vehicle> vehicles = await CircApi().getVehicles();
     List<Marker> markers = List.generate(vehicles.length, (index) {
@@ -47,7 +48,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log("recreating with lat=${_center.latitude}, long=${_center.longitude}");
+    log("recreating with lat=${_currentMapCenter.latitude}, long=${_currentMapCenter.longitude}");
     _context = context;
     return Scaffold(
 //        drawerScrimColor: Colors.transparent,
@@ -69,7 +70,7 @@ class _MapScreenState extends State<MapScreen> {
             myLocationButtonEnabled: false,
             mapToolbarEnabled: false,
             initialCameraPosition: CameraPosition(
-              target: _center,
+              target: _currentMapCenter,
               zoom: 11.0,
             ),
             markers: _markers,
@@ -157,9 +158,9 @@ class _MapScreenState extends State<MapScreen> {
                       // TODO: move to Bloc # getCurrentPosition OR just make geolocator public member? make it flexible
                       Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
                       setState(() {
-                        _center = LatLng(position.latitude, position.longitude);
+                        _currentMapCenter = LatLng(position.latitude, position.longitude);
                       });
-                      mapController.moveCamera(CameraUpdate.newLatLng(_center));
+                      _mapController.moveCamera(CameraUpdate.newLatLng(_currentMapCenter));
                     },
                   ),
                 ),
