@@ -10,6 +10,8 @@ class CircleButton extends StatelessWidget {
   final Color iconColor;
   final EdgeInsets margin;
 
+  final String heroTag;
+
 
   CircleButton({this.onPressed,
     this.buttonSize = 36,
@@ -18,6 +20,7 @@ class CircleButton extends StatelessWidget {
     @required this.iconData,
     this.iconColor = Colors.black54,
     this.margin = const EdgeInsets.all(0),
+    this.heroTag,
   });
 
   @override
@@ -28,6 +31,7 @@ class CircleButton extends StatelessWidget {
       margin: margin,
       child: FloatingActionButton(
         backgroundColor: backgroundColor,
+        heroTag: heroTag,
         child: IconButton(
           padding: EdgeInsets.all(0),
           icon: Icon(iconData, size: iconSize,),

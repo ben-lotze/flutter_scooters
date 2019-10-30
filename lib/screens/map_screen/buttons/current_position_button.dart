@@ -10,6 +10,7 @@ class CurrentPositionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleButton(
       iconData: Icons.my_location,
+      heroTag: "current_position_button",
       onPressed: () => _onPressed(context),
     );
   }

@@ -9,6 +9,7 @@ class LayersButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CircleButton(
       iconData: Icons.layers,
+      heroTag: "layers_button",
       onPressed: () => _onPressed(context),
     );
   }

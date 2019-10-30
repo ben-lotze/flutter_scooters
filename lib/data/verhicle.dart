@@ -38,4 +38,7 @@ class Vehicle {
       currency: map["currency"],
     );
   }
+
+
+
 }

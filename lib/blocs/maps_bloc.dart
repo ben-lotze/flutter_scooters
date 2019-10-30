@@ -18,6 +18,9 @@ class MapsBloc {
 
   CircApi _circApi;
 
+  StreamSink _vehicleInfoPopupSink;
+  set vehicleInfoPopupSink(StreamSink sink) => _vehicleInfoPopupSink = sink;
+
   BehaviorSubject<GoogleMapController> _mapControllerSubject;
   StreamSink get mapControllerSink => _mapControllerSubject.sink;
 //  void setMapController(GoogleMapController controller) {
@@ -34,7 +37,7 @@ class MapsBloc {
   // more
   // markerTapped
 
-  static const double _DEFAULT_ZOOM_LEVEL = 14;
+  static const double DEFAULT_ZOOM_LEVEL = 14;
 
 
   MapsBloc._internal() {
@@ -73,6 +76,7 @@ class MapsBloc {
         onTap: () { // TODO: on tap, just put whatever is necessary into streams/subjects
           print("marker tapped for id=${vehicle.id}");
 //          showInfoCard(vehicle);
+          _vehicleInfoPopupSink.add(vehicle);
         },
         consumeTapEvents: true,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),  // replaceable with custom Widget?
@@ -243,7 +247,7 @@ class MapState {
     this.mapCenter = const LatLng(0, 0),
     this.mapType = MapType.normal,
     this.markers = const {},
-    this.zoomLevel = MapsBloc._DEFAULT_ZOOM_LEVEL,
+    this.zoomLevel = MapsBloc.DEFAULT_ZOOM_LEVEL,
   });
 
   @override
