@@ -212,6 +212,10 @@ class _MapScreenState extends State<MapScreen> {
 
           // unlock slider
           //TODO: should have lock/unlock icon on destination (destination side changes from left to right)
+          // increase size on destination (feedback)
+          // - constrain side movements -> how? no further than start/end
+          // - when dragging: left of Draggable --> different background color (stronger effect of dragging something "sticky")
+          // - move into distinct Widget class, make sizes static const class members
           Container(
             width: MediaQuery.of(context).size.width - 32,
             height: 36,

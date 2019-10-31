@@ -2,41 +2,84 @@
 
 
 ----- Features: -----
-- Barcode Scanner on cenetr button --> must not do something useful 
+- QR Scanner on cenetr button --> must not do something useful 
 	-> just scan some barcodes/QR and show data (if necessary: provide some picures that can be scanned)
 	- i.e. QR codes that simulate numbers from scooters (encode: id, name, description)
 	- then: simulate unlock (simple, no auth)
 	- Hihi: wenn jemand einen Barcode scannt, der NICHT in der Nähe ist --> Fehlermeldung:
 	  "You may have encountered an error. The scooter you just scanned is around 2 km away from you current position. Not sure how you did that."
 	  --> in reality: misuse potential? just silently assume that the roller is there and was scanned? log this to central service
+	- nach Scan: erst mal Popup zeigen
+		- Infos, Battery, Name, Preis usw
+		- Unlock Button
+	- Ausdruck:
+		QR Codes, auch ungültige -> für Test sinnvoller Fehlermeldung in App
+- Achtung: Scanner: Back Button funzt nicht auf Note8 --> bleibt immer auf Scanner Screen !!!!!!
+
 
 batteryLevel -> show already on map (next to or visualized inside pin) -> pin icon available as location...
 - reasoning: important information --> no need to click on 
 - even better: do not include scooters that will not be sufficient to reach destination in route search result (optional, )
 	-> changing roller costs at the moment -> in future: could allow switching scooters without extra costs to allow longer rides (and make more money?)
 
-Reserviern
+Reservieren 
+- Mock Endpunkt auf Server -> einfach in Api rein, ggf. mit Fake-Wartezeit, Random zwischen x/y, in 5% der Fälle Timeout mit Snackbar-Feedback
 - sinnvoll für Routen (von/nach) -> schon mal reservieren wegen Fußweg
 - "will be reserved for 15 minutes starting now"
 - show countdown on pin + somewhere else in user stuff
 - 
 
+Karte/
+- Suche: Entfernungssuche simulieren: nur in X km Entfernung suchen (Radius) --> in MockDing rein und das wiederum in CircApi reinziehen
+- den einen Roller über Text suchen -> wo ist der? (fehlende ID ist 0?)
+- Raussuchen: Roller kombinieren zu Cluster: nur ein Marker mit Anzahl
+
+
+Android Versionen -> alte und neue testen für Berechtigungen (KArte, Kamera)
 
 UI
+ -Tooltip-Widget um alle Buttons herum (sofern Widget keinen eigenen Tooltip enthält -> IconButton zB)
+- Web !!!
+- StartAnimation
+	- Bilder von Instgram, fliegen alle ins Zentrum und verschwinden da im Circ Logo
 - OHNE SafeArea -> immer korrekte Ausrichtung der Buttons
 - Markers
 	- wie in Google Anleitung
 	- kein Hint-Poptup -> Card unten am Bildschirm
 	- Pin umfärben -> wie? sind alle in Map mit K=rollerId (als inline comment am Ende der Zeile! "// K=scooterId")
 
+- general info about scooters -> take from home page
+	- like manual
+	- please ride responsably
+	- please use a helmet for your own security
+
 
 IDEEN
 - Eigene db Klasse für mehr Roller? --> ggf. mit HttpServer und eigener Rest-API --> aber das wäre schon etwas Arbeit und ist nicht verlangt!
+- Multi user -> example: employer pays all rides until 5pm, after that user switches to private account
 
+
+Code/pretty/nice
+- alle Warnings weg
+- alle TODO weg
+- RestTools -> getList / getMap --> duplicates (some more)
+- Annotations: @NotNull usw
+- BEhicle: wann refreshen? Battery bleibt nicht auf x% so lange es im Speicher ist. --> sollte von Server kommen --> assume there was such a functionality and present how code would look like on client
+
+
+some "TODO reviewer:"" im Code --> besodnere Hinweise
+
+Tests
+- QR Scanner: mit pngs scannen lassen und codierten Code darin vergleichen
+- calculateFormattedPriceForDuration: für 121s = 3m abrechnen usw., 1s sind basePreis plus 1 Minute ("// customer service may be happier if we don't do this.")
 
 ---- TODO: ----
+
 - text for submission: featues, screenshots and design decisions are all in the readme file on github (github repository start page)
 - readme in github! features, screenshots, design decisions
+- permissions: 
+	- camera for barcode scanner
+	- location (obviously) to show scooters nearby
 - Gradle update
 - git
 - version resolution in gradle -> notwendig? kürzer?
