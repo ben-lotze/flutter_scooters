@@ -67,6 +67,7 @@ class MapsBloc {
 
   void _onMapCreated(GoogleMapController controller) async {
     List<Vehicle> vehicles = await _circApi.getVehicles();
+    vehicles.forEach((v) => print(v));
 
     List<Marker> markers = List.generate(vehicles.length, (index) {
       Vehicle vehicle = vehicles.elementAt(index);

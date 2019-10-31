@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// Currently all vehicles are E-scooters. More attributes are necessary to allow for more vehicle types.
 class Vehicle {
   /// unique id of a vehicle (Circ-wide unique)
@@ -8,22 +10,32 @@ class Vehicle {
   final double latitude;
   /// longitude where this vehicle is currently located
   final double longitude;
+  /// battery level between 0 and 100
   final int batteryLevel;
   final DateTime timestamp;
-  final int price;  // price in cents
-  final int priceTime;  // Specified the The specified price is due for each started time frame of priceTime-length
-  final String currency; // TODO: currency: why string? use enum? (not cool in Dart)
+  /// price in cents
+  final int price;
+  /// time frame in seconds. The specified price is due for each started time frame of priceTime-length
+  final int priceTime;
+  /// currency symbol to be used for formatted prices
+  final String currency;
 
-  
+
   Vehicle._create({
-    this.id, this.name, this.description, 
-    this.latitude, this.longitude,
-    this.batteryLevel, this.timestamp, 
-    this.price, this.priceTime, this.currency
+    @required this.id,
+    this.name,
+    this.description,
+    @required this.latitude,
+    @required this.longitude,
+    this.batteryLevel,
+    this.timestamp,
+    @required this.price,
+    @required this.priceTime,
+    @required this.currency
   }); 
 
 
-
+  // TODO documentation, which required and why
   factory Vehicle.fromJson(Map<String, dynamic> map) {
     return Vehicle._create(
       id: map["id"],
@@ -39,6 +51,11 @@ class Vehicle {
     );
   }
 
-
+  @override
+  String toString() {
+    return 'Vehicle{id: $id, name: $name, description: $description, latitude: $latitude, '
+        'longitude: $longitude, batteryLevel: $batteryLevel, timestamp: $timestamp, '
+        'price: $price, priceTime: $priceTime, currency: $currency}';
+  }
 
 }

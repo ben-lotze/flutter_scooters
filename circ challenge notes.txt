@@ -1,4 +1,5 @@
-
+FRAGEN!!!
+- ok to use some icons from the original Circ app?
 
 
 ----- Features: -----
@@ -37,7 +38,21 @@ Karte/
 
 Android Versionen -> alte und neue testen für Berechtigungen (KArte, Kamera)
 
+
+PriceFormatter
+- vielleicht einfach nur static helper class?
+- unnötig, das als Bloc zu machen
+
+TimeFormatter
+- <60 in Sekunden
+- % 60 == 0 -> 1 minute
+
+
+Guthaben irgendwie im BottomPopup anzeigen
+
+
 UI
+- Marker mus change color when selected!
  -Tooltip-Widget um alle Buttons herum (sofern Widget keinen eigenen Tooltip enthält -> IconButton zB)
 - Web !!!
 - StartAnimation
@@ -58,9 +73,15 @@ IDEEN
 - Eigene db Klasse für mehr Roller? --> ggf. mit HttpServer und eigener Rest-API --> aber das wäre schon etwas Arbeit und ist nicht verlangt!
 - Multi user -> example: employer pays all rides until 5pm, after that user switches to private account
 
+- Flash/blink --> Scooter erkennen
+- Übersetzen DE/EN
+- Rent history (quick shot for now: Hive to be platform independent: also works in browser)
+
 
 Code/pretty/nice
+- main -> Krempel raus
 - alle Warnings weg
+	- Dart version
 - alle TODO weg
 - RestTools -> getList / getMap --> duplicates (some more)
 - Annotations: @NotNull usw

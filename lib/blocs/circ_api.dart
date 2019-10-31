@@ -8,10 +8,12 @@ class CircApi {
   String basePath = "FlashScooters/Challenge";
 
 
-
   Future<List<Vehicle>> getVehicles({LatLng position}) async {
     List<dynamic> jsonVehicles = await RestTools.sendRestRequestForJsonList(authority, "$basePath/vehicles");
     return jsonVehicles.map((json) => Vehicle.fromJson(json)).toList();
+
+    // TODO can be done: https://stackoverflow.com/a/53369551
+//    return await RestTools.sendRestRequestForList<Vehicle>(authority, "$basePath/vehicles");
   }
 
   Future<Vehicle> getVehicle(int id) async {

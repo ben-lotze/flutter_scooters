@@ -12,7 +12,7 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="circ_flutter_challenge"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
 
         <!-- Maps API key is restricted and only works on Android -->
         <meta-data android:name="com.google.android.geo.API_KEY"

@@ -13,9 +13,9 @@ class MyApp extends StatelessWidget {
       title: 'Circ Flutter Challenge',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.deepOrange, // TODO: use real Circ color
+        primarySwatch: Colors.deepOrange, // TODO: use real Circ color(s)
       ),
-      home: MapScreen()
+      home: Scaffold(body: MapScreen())
     );
   }
 }
