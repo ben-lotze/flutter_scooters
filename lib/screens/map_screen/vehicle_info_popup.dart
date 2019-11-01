@@ -233,10 +233,10 @@ class VehicleInfoPopup extends StatelessWidget {
                           CircleAvatar(child: Text("5m", style: TextStyle(fontSize: 12),)),
                           Text("${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}"),
                           SizedBox(width: 8),
-                          CircleAvatar(child: Text("10m")),
+                          CircleAvatar(child: Text("10m", style: TextStyle(fontSize: 12))),
                           Text("${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}"),
                           SizedBox(width: 8),
-                          CircleAvatar(child: Text("15m")),
+                          CircleAvatar(child: Text("15m", style: TextStyle(fontSize: 12))),
                           Text("${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 15))}"),
                         ],
                       ),
@@ -265,33 +265,6 @@ class VehicleInfoPopup extends StatelessWidget {
 
   }
 }
-
-
-
-// TODO: use StreamBuilder with info about state (locked + dragging + hovering over destination + accepted/unlocked)
-class DraggableCircle extends StatelessWidget {
-
-  final double _size;
-  final GlobalKey _key;
-
-  DraggableCircle(this._key, this._size);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: _size,
-      height: _size,
-      key: _key,
-      child: Icon(Icons.lock, color: Colors.black),
-      margin: EdgeInsets.only(left: 0),   // TODO border size
-      decoration: BoxDecoration(
-        color: Colors.red,
-        borderRadius: BorderRadius.circular((_size + 4) / 2),    // TODO border size
-      ),
-    );
-  }
-}
-
 
 
 

@@ -13,8 +13,10 @@ class CustomSlider extends StatefulWidget {
 
   Color backgroundColor;
   // TODO: background container should be a Widget! (with any child and Text and whatever) -> fallback to my default
-  Widget backgroundChild;
-  Widget backgroundChildWhenDropped;
+  Widget backgroundChild = Center(child: Text("Drag to unlock"),);
+  Widget backgroundChildWhenDropped = Center(child: Text("Drag to lock"),);
+
+
 
 
   double borderWidth;
@@ -22,6 +24,15 @@ class CustomSlider extends StatefulWidget {
 
   double containerWidth;
   double containerHeight;
+
+
+  Function onDrag = () {};
+  Function onDraggedDistance = () {};
+  Function onDraggedPercentage = () {};
+  Function onDragAborted = () {};
+  Function onHoveringOverDestination = () {};
+  Function onHoveringStoppedWithoutDropping = () {};
+  Function onDroppedAtDestination = () {};
 
 
 //  final ValueChanged<double> valueChanged;    // TODO instead of this: offer all sort of callbacks: onRightSideFinished, onLeftSideFinished, onLeftSideReset, onDrag
@@ -50,8 +61,9 @@ class CustomSliderState extends State<CustomSlider> {
   GlobalKey _draggableKey = GlobalKey();
   double _startingXOffset;
 
-  double finishLinePercentage = 0;
-  bool _draggableInFinishArea = false;
+  double _finishLinePercentage = 0;
+  bool _isHoveringOverDestination = false;
+  bool _isDroppedOnDestination = false;
 
   // StartingSide -> left or ride --> can/will be switched once the destination is reached
 
@@ -95,89 +107,104 @@ class CustomSliderState extends State<CustomSlider> {
       margin: EdgeInsets.all(0.0),
 
       // new context necessary
-      child: Builder(
-        builder: (context) {
+      child: Stack(
+        children: <Widget>[
 
 
-          return AnimatedBuilder(
-            animation: _dragPositionPercentageListener,  // TODO: find out why animation does not work based on padding/px instead of [0,1] alignment
+          // background depends on draggable position
+          _isDroppedOnDestination ? widget.backgroundChildWhenDropped : widget.backgroundChild,
+
+//          if(_isDroppedOnDestination) widget.backgroundChildWhenDropped,
+//          if(!_isDroppedOnDestination) widget.backgroundChild,
+
+          Builder(
+            builder: (context) {
+
+
+              return AnimatedBuilder(
+                animation: _dragPositionPercentageListener,  // TODO: find out why animation does not work based on padding/px instead of [0,1] alignment
 //            animation: internalDxListener,
-            builder: (context, child) {
-              return Align(
-                alignment: Alignment(_dragPositionPercentageListener.value * 2 - 1, 0.5),
-                child: child,
-              );
+                builder: (context, child) {
+                  return Align(
+                    alignment: Alignment(_dragPositionPercentageListener.value * 2 - 1, 0.5),
+                    child: child,
+                  );
 
 //              return Padding(
 //                padding: EdgeInsets.only(left: internalDxListener.value ?? 0),
 //                child: child,
 //              );
 
+                },
+
+                // visible background
+                child: GestureDetector(
+
+                  onHorizontalDragUpdate: (DragUpdateDetails details) {
+                    RenderBox draggableRenderBox = _draggableKey.currentContext.findRenderObject();
+                    if (_startingXOffset == null) {
+                      _startingXOffset = draggableRenderBox.localToGlobal(Offset.zero).dx;
+//                      print("draggable starting offset: $_startingXOffset");
+                    }
+//                    else {
+//                      print("draggable starting offset already found: $_startingXOffset");
+//                    }
+
+
+                    // only calculate this once
+                    if (_finishLinePercentage == 0) {
+                      print("calculating finishLinePercentage once");
+                      _finishLinePercentage = (context.size.width - 48) / context.size.width;    // DO NOT FORGET THE BORDER!!!
+                    }
+//                    print("finish line percentage: $_finishLinePercentage");
+
+//                    print("\nwidth=${context.size.width}, value=${_dragPositionPercentageListener.value}, dx=${details.delta.dx}, "
+//                        "dxGlobal=${details.globalPosition.dx}, dxLocal=${details.localPosition.dx}");
+
+
+                    double dxInDragContainer = draggableRenderBox.localToGlobal(Offset.zero).dx - _startingXOffset;
+                    _currentDxListener.value = dxInDragContainer;
+//                    print("dxInDragContainer: $dxInDragContainer");
+
+                    // update widget position based on swipe/drag position
+                    _dragPositionPercentageListener.value = (_dragPositionPercentageListener.value + details.delta.dx / context.size.width).clamp(.0, 1.0);
+
+
+                    // check position based on real current widget position (widget position is updated less often than finger position)
+//                    print("finish line reached? ${dxInDragContainer / context.size.width}");
+                    if (dxInDragContainer / context.size.width >= _finishLinePercentage) {
+//                      print("finish line reached!!! ${dxInDragContainer / context.size.width}");
+                      _isHoveringOverDestination = true;
+                    }
+                    else {
+                      _isHoveringOverDestination = false;
+                    }
+                  },
+
+
+                  onHorizontalDragEnd: (DragEndDetails details) {
+//                    print("canceled @percentage=${_dragPositionPercentageListener.value}");
+                    // check if inside destination area, otherwise reset to start position
+                    if (_isHoveringOverDestination) {
+                      onDroppedAtDestination();
+                    }
+                    else {
+                      onDragAborted();
+                    }
+                  },
+
+
+
+                  // draggable child
+                  child: _isDroppedOnDestination ?
+                      DraggableCircle(_draggableKey, 48, Colors.green, Icon(Icons.lock_open, color: Colors.black54))
+                      : DraggableCircle(_draggableKey, 48, Colors.deepOrange, Icon(Icons.lock_outline, color: Colors.black54)),
+                ),
+              );
             },
-
-            // visible background
-            child: GestureDetector(
-
-              onHorizontalDragUpdate: (DragUpdateDetails details) {
-                RenderBox draggableRenderBox = _draggableKey.currentContext.findRenderObject();
-                if (_startingXOffset == null) {
-                  _startingXOffset = draggableRenderBox.localToGlobal(Offset.zero).dx;
-                  print("draggable starting offset: $_startingXOffset");
-                }
-                else {
-                  print("draggable starting offset already found: $_startingXOffset");
-                }
-
-
-                // only calculate this once
-                if (finishLinePercentage == 0) {
-                  print("calculating finishLinePercentage once");
-                  finishLinePercentage = (context.size.width - 48) / context.size.width;    // DO NOT FORGET THE BORDER!!!
-                }
-                print("finish line percentage: $finishLinePercentage");
-
-                print("\nwidth=${context.size.width}, value=${_dragPositionPercentageListener.value}, dx=${details.delta.dx}, "
-                    "dxGlobal=${details.globalPosition.dx}, dxLocal=${details.localPosition.dx}");
-
-
-                double dxInDragContainer = draggableRenderBox.localToGlobal(Offset.zero).dx - _startingXOffset;
-                _currentDxListener.value = dxInDragContainer;
-                print("dxInDragContainer: $dxInDragContainer");
-
-                // update widget position based on swipe/drag position
-                _dragPositionPercentageListener.value = (_dragPositionPercentageListener.value + details.delta.dx / context.size.width).clamp(.0, 1.0);
-
-
-                // check position based on real current widget position (widget position is updated less often than finger position)
-                print("finish line reached? ${dxInDragContainer / context.size.width}");
-                if (dxInDragContainer / context.size.width >= finishLinePercentage) {
-                  print("finish line reached!!! ${dxInDragContainer / context.size.width}");
-                  _draggableInFinishArea = true;
-                }
-                else {
-                  _draggableInFinishArea = false;
-                }
-              },
-
-
-              onHorizontalDragEnd: (DragEndDetails details) {
-                print("canceled @percentage=${_dragPositionPercentageListener.value}");
-                // check if inside destination area, otherwise reset to start position
-                if (_draggableInFinishArea) {
-                  // TODO: offer callback
-                  onDraggableDroppedAtDestination();
-                }
-                else {
-                  onDragAborted();
-                }
-              },
-              // draggable child
-              // TODO: needs to be stateful too -> needs to track its position to know when it's finished
-              child: DraggableCircle(_draggableKey, 48),
-            ),
-          );
-        },
-      ),
+          )
+        ],
+      ) ,
     );
   }
 
@@ -186,29 +213,94 @@ class CustomSliderState extends State<CustomSlider> {
   // TODO: offer all these callbacks as Function parameters -> later: for both sides
 
   /// TODO return current percentage or px offset
-  double onDrag() {
-
+  void onDrag() {
+    widget.onDrag();
   }
 
+  double onDraggedDistance() {
+    return widget.onDraggedDistance();
+  }
+
+  double onDraggedPercentage() {
+    return widget.onDraggedPercentage();
+  }
 
   /// If drag is not finished into the destination. Specify what should happen additionally to
   /// resetting the draggable to it's starting position.
   void onDragAborted() {
     print("onDragAborted");
     _dragPositionPercentageListener.value = 0.0; // TODO: animation instead of immediate reset
+    _isDroppedOnDestination = false;
     // TODO: call callback
+    this.setState(() {});
+    widget.onDragAborted();
   }
 
   void onHoveringOverDestination() {
-    // when hovering too long. tooltip: "Just drop it here to unlock. Trust us."
+    // inGUI: when hovering too long. tooltip: "Just drop it here to unlock. Trust us." ---> 2nd callback with delay --> start timer whenever entering, stop when leaving
 
     // TODO: animation! pulsating, glowing/blinking outside
+    widget.onHoveringOverDestination();
   }
 
-  void onDraggableDroppedAtDestination() {
+  void onHoveringStoppedWithoutDropping() {
+    widget.onHoveringStoppedWithoutDropping();
+  }
+
+  void onDroppedAtDestination() {
     print("onDraggableDroppedAtDestination");
-//    _dragPositionPercentagListener.value = finishLinePercentage;
+//    _dragPositionPercentageListener.value = finishLinePercentage;
+    _isDroppedOnDestination = true;
+    this.setState(() {});
+    widget.onDroppedAtDestination();
   }
 
 
 }
+
+
+
+/* TODO: for background container
+- DraggableCircle needs to be aligned inside a full size container!
+- offer default background, with customizable text
+ */
+
+
+class DraggableBackground extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
+
+
+
+// TODO: use StreamBuilder with info about state (locked + dragging + hovering over destination + accepted/unlocked)
+class DraggableCircle extends StatelessWidget {
+
+  final GlobalKey _key;
+
+  final double _size;
+  final Color backgroundColor;
+  final Icon icon;
+
+  DraggableCircle(this._key, this._size, this.backgroundColor, this.icon);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      key: _key,
+      width: _size,
+      height: _size,
+      child: icon,
+      margin: EdgeInsets.only(left: 0),   // TODO border size
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular((_size + 4) / 2),    // TODO border size
+      ),
+    );
+  }
+}
+
+
