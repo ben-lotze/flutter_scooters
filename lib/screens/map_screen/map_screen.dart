@@ -18,14 +18,10 @@ class MapScreen extends StatefulWidget {
   _MapScreenState createState() => _MapScreenState();
 }
 
+
 class _MapScreenState extends State<MapScreen> {
 
-//  MapsBloc _mapBloc;
-
-
-
-//  BuildContext _context;
-  /// will show popup for incoming vehicle, will close on incoming null
+  /// will show popup for incoming vehicle
   StreamController<Vehicle> _vehicleInfoPopupController; // TODO: or subject to be consistent
 
   @override
@@ -33,23 +29,16 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     print("initializing vehicle popup sink");
     _vehicleInfoPopupController = StreamController.broadcast();
+    _vehicleInfoPopupController.stream.listen((vehicle) {
+      print("info popup stream: incoming id=${vehicle.id}");
+      _showVehicleInfoCard(vehicle, this.context);        // TODO: context necessary for dialog -> find better way?
+      // TODO: click should not center map (that is confusing for the user), only change camera if marker would be hidden
+    });
   }
-
-
-
 
 
   @override
   Widget build(BuildContext context) {
-
-    // TODO: context necessary for dialog -> find better way
-    _vehicleInfoPopupController.stream.listen((vehicle) {
-      print("info popup stream: incoming id=${vehicle.id}");
-      _showVehicleInfoCard(vehicle, this.context);
-      // click should not center map (that is confusing for the user)
-    });
-
-//    _context = context;
     return Provider(
       builder: (context) {
         MapsBloc bloc = MapsBloc.create();
@@ -59,7 +48,7 @@ class _MapScreenState extends State<MapScreen> {
 
       // need new context to find bloc via context
       child: Scaffold(
-        backgroundColor: Colors.transparent,
+//        backgroundColor: Colors.transparent,
 
         body: Builder(
           builder: (context) => Stack(
@@ -97,18 +86,13 @@ class _MapScreenState extends State<MapScreen> {
                       );
                     }
 
-                    // TODO: default not finished!
+                    // TODO: default behavior not finished! -> must not just be a container
                     return Container();
                   }
                 ),
 
-                /*
-                TODO: UI controls:
-                - layers button (map style) -> top right, smaller
-                - position, below layers, same smaller size
+                /*  TODO: UI controls:
                 - +/- buttons
-                - mapToolbar is android only -> implement manually
-
                 - scanner button should animate out to bottom when starting search?
                  */
 
@@ -151,6 +135,7 @@ class _MapScreenState extends State<MapScreen> {
 
 
   void _onMapCreated(GoogleMapController controller, BuildContext context) async {
+    // update bloc with map controller to be able to send updates from the bloc
     Provider.of<MapsBloc>(context).mapControllerSink.add(controller);
   }
 
@@ -162,9 +147,15 @@ class _MapScreenState extends State<MapScreen> {
       backgroundColor: Colors.transparent,
       shape: null,      // TODO: NO
       context: context,
-      builder: (context) {
-        return VehicleInfoPopup(vehicle);
-      }
+      builder: (context) => VehicleInfoPopup(vehicle),
     );
   }
+
+
+  @override
+  void dispose() {
+    super.dispose();
+    _vehicleInfoPopupController.close();
+  }
+
 }

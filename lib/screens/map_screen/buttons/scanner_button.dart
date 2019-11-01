@@ -1,6 +1,4 @@
-import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 
 class ScannerButton extends StatelessWidget {
@@ -19,29 +17,29 @@ class ScannerButton extends StatelessWidget {
   }
 
   void onPressed(BuildContext context) async {
-    scan();
+//    scan();
   }
 
 
   /// logic for scanning taken from example on Medium:
   /// https://medium.com/flutter-community/building-flutter-qr-code-generator-scanner-and-sharing-app-703e73b228d3
-  Future<String> scan() async {
-    try {
-      return await BarcodeScanner.scan();
-    }
-    on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
-          return "You did not grant the camera permission. You shall not scan.";
-      }
-      else {
-        return "Unknown error: $e";
-      }
-    }
-    on FormatException{
-      return 'null (User returned using the "back"-button before scanning anything. Result)';
-    }
-    catch (e) {
-      return 'Unknown error: $e';
-    }
-  }
+//  Future<String> scan() async {
+//    try {
+//      return await BarcodeScanner.scan();
+//    }
+//    on PlatformException catch (e) {
+//      if (e.code == BarcodeScanner.CameraAccessDenied) {
+//          return "You did not grant the camera permission. You shall not scan.";
+//      }
+//      else {
+//        return "Unknown error: $e";
+//      }
+//    }
+//    on FormatException{
+//      return 'null (User returned using the "back"-button before scanning anything. Result)';
+//    }
+//    catch (e) {
+//      return 'Unknown error: $e';
+//    }
+//  }
 }

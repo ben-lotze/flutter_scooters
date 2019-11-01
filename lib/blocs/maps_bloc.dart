@@ -23,9 +23,6 @@ class MapsBloc {
 
   BehaviorSubject<GoogleMapController> _mapControllerSubject;
   StreamSink get mapControllerSink => _mapControllerSubject.sink;
-//  void setMapController(GoogleMapController controller) {
-//    _mapControllerSubject.add(controller);
-//  }
 
   BehaviorSubject<MapState> _mapStateSubject;
   Stream get mapStateStream => _mapStateSubject.stream;
@@ -47,12 +44,13 @@ class MapsBloc {
 
     _mapControllerSubject = BehaviorSubject();
     _mapControllerSubject.listen((mapController) {
+      print("map created");
       _onMapCreated(mapController);
     });
 
 
 //    _mapCenterSubject = BehaviorSubject();
-    resetToUserPosition();
+//    centerToCurrentUserPosition();
 
 //    _mapTypeSubject = BehaviorSubject.seeded(MapType.normal);   // TODO: maybe reset to last used map type (persistent/settings)
   }
@@ -93,6 +91,8 @@ class MapsBloc {
 //    _mapStateSubject.add(mapState);
 
     updateMapState(markers: Set.of(markers));
+
+    centerToCurrentUserPosition();
   }
 
 
@@ -103,10 +103,20 @@ class MapsBloc {
 
 
   // TODO: rename to --> position button pressed ot similar --> does two things
-  void resetToUserPosition() async {
+  void centerToCurrentUserPosition() async {
+
+    GoogleMapController controller = _mapControllerSubject.value;
+    if (controller == null) {
+      print("map controller still null, returning");
+      return;
+    }
+
+
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     LatLng userLatLng = LatLng(position.latitude, position.longitude);
+    print("map controller ok, will reset user position $userLatLng");
     _mapControllerSubject.value.animateCamera(CameraUpdate.newLatLng(userLatLng));
+//    _mapControllerSubject.value.moveCamera(CameraUpdate.newLatLng(userLatLng));
 
 //    print("\nuserLatLng: $userLatLng");
 //    // TODO: try with .. and all in one line
@@ -144,6 +154,7 @@ class MapsBloc {
   }
 
 
+  // TODO remove, use API
   double calculateDistance(lat1, lon1, lat2, lon2){
     var p = 0.017453292519943295;
     var c = math.cos;
