@@ -15,6 +15,7 @@ class SearchBar extends StatelessWidget {
       child: AppBar(        // Add AppBar here only
         backgroundColor: Colors.transparent,
         elevation: 0.0,
+        leading: Container(),
         title: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
           child: Container(

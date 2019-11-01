@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:circ_flutter_challenge/blocs/maps_bloc.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
-import 'package:circ_flutter_challenge/screens/map_screen/bottom_vehicle_info_slider.dart';
+import 'package:circ_flutter_challenge/screens/map_screen/vehicle_info_popup.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/current_position_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/layers_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/scanner_button.dart';
@@ -46,6 +46,7 @@ class _MapScreenState extends State<MapScreen> {
     _vehicleInfoPopupController.stream.listen((vehicle) {
       print("info popup stream: incoming id=${vehicle.id}");
       _showVehicleInfoCard(vehicle, this.context);
+      // click should not center map (that is confusing for the user)
     });
 
 //    _context = context;
@@ -162,7 +163,7 @@ class _MapScreenState extends State<MapScreen> {
       shape: null,      // TODO: NO
       context: context,
       builder: (context) {
-        return BottomVehicleInfo(vehicle);
+        return VehicleInfoPopup(vehicle);
       }
     );
   }

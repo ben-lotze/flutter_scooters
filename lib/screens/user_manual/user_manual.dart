@@ -6,7 +6,7 @@ one page with multiple images for
 
 
 
-alternaitve design ideas:
+alternative design ideas:
 - top: 3 images as tabs -> content is to be scrolled (indicator circles)
  */
 
@@ -15,13 +15,13 @@ alternaitve design ideas:
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// no Bloc necessary, is self contained
+// no Bloc necessary: completely self contained
 class TutorialScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
 
       appBar: AppBar(
         title: Text("How to use Circ scooters"),
@@ -39,6 +39,7 @@ class TutorialScreen extends StatelessWidget {
 
               Expanded(
                 child: PageView(
+
                   children: <Widget>[
                     _TutorialPage(
                       title: "Unlocking",
@@ -54,7 +55,7 @@ class TutorialScreen extends StatelessWidget {
                       title: "Drive relaxed",
                       assetPath: "assets/tutorial/tutorial_page_3.png",
                       description: "To start driving, accelerate three times with your foot. Then use the switch on your handlebar to adjust scooter speed. "
-                          "Please use the bicycle lanes and don't dive on the street.",
+                          "Please use the bicycle lanes and don't drive on the street.",
                     ),
                     _TutorialPage(
                       title: "Parking",
@@ -67,15 +68,20 @@ class TutorialScreen extends StatelessWidget {
 
 
 
-              Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 48,
-                  alignment: Alignment.center,
-                  child: Text("OK. I got this."),
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(24)
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 48,
+                    alignment: Alignment.center,
+                    child: Text("OK. I got this."),
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(24)
+                    ),
                   ),
                 ),
               )
@@ -91,13 +97,12 @@ class TutorialScreen extends StatelessWidget {
 }
 
 
-
+/// one single page of the tutorial
 class _TutorialPage extends StatelessWidget {
 
   final String title;
   final String assetPath;
   final String description;
-
 
   _TutorialPage({
       this.title,

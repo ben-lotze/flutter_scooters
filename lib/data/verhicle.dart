@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+// TODO better vehicle doc
 /// Currently all vehicles are E-scooters. More attributes are necessary to allow for more vehicle types.
 class Vehicle {
   /// unique id of a vehicle (Circ-wide unique)
@@ -21,6 +22,7 @@ class Vehicle {
   final String currency;
 
 
+  /// private constructor, vehicles should only created via [Vehicle.fromJson] method
   Vehicle._create({
     @required this.id,
     this.name,
@@ -36,18 +38,19 @@ class Vehicle {
 
 
   // TODO documentation, which required and why
-  factory Vehicle.fromJson(Map<String, dynamic> map) {
+  /// [jsonMap] from REST endpoint
+  factory Vehicle.fromJson(Map<String, dynamic> jsonMap) {
     return Vehicle._create(
-      id: map["id"],
-      name: map["name"],
-      description: map["description"],
-      latitude: map["latitude"],
-      longitude: map["longitude"],
-      batteryLevel: map["batteryLevel"],
-      timestamp: DateTime.parse(map["timestamp"]),
-      price: map["price"],
-      priceTime: map["priceTime"],
-      currency: map["currency"],
+      id: jsonMap["id"],
+      name: jsonMap["name"],
+      description: jsonMap["description"],
+      latitude: jsonMap["latitude"],
+      longitude: jsonMap["longitude"],
+      batteryLevel: jsonMap["batteryLevel"],
+      timestamp: DateTime.parse(jsonMap["timestamp"]),
+      price: jsonMap["price"],
+      priceTime: jsonMap["priceTime"],
+      currency: jsonMap["currency"],
     );
   }
 

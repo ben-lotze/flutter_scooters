@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
   (will be reserved for 15 minutes, after that it's again available for anybody else)
 
    */
-class BottomVehicleInfo extends StatelessWidget {
+class VehicleInfoPopup extends StatelessWidget {
 
   final Vehicle vehicle;
 
@@ -23,7 +23,7 @@ class BottomVehicleInfo extends StatelessWidget {
   static const double _DRAGGABLE_BAR_BORDER_WIDTH = 2;
 
 
-  BottomVehicleInfo(this.vehicle);
+  VehicleInfoPopup(this.vehicle);
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +149,8 @@ class BottomVehicleInfo extends StatelessWidget {
             SizedBox(height: 16,),
 
 
+            // TODO: this can be much cleaner -> PriceCalculator/PriceFormatter, no blocs?, no new context?
+            // TODO: UI should NOT calculate on its own!!!
             // price info
             Provider(
               builder: (context) => PriceCalculatorBloc(),
@@ -227,3 +229,7 @@ class _DraggableCircle extends StatelessWidget {
     );
   }
 }
+
+
+
+
