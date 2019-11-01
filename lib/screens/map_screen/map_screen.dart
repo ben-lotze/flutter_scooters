@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:circ_flutter_challenge/blocs/maps_bloc.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
+import 'package:circ_flutter_challenge/generic_widgets/circle_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/vehicle_info_popup.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/current_position_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/layers_button.dart';
@@ -48,47 +49,53 @@ class _MapScreenState extends State<MapScreen> {
 
       // need new context to find bloc via context
       child: Scaffold(
-//        backgroundColor: Colors.transparent,
-
         body: Builder(
-          builder: (context) => Stack(
+          builder: (context) {
+            MapsBloc mapsBloc = Provider.of<MapsBloc>(context);
+            return Stack(
 
               children: <Widget>[
 
+                // also put map into separate class
                 // TODO: maybe StreamBuilder is not necessary here? (is this ever refreshed?)
                 // TODO: needs to  be refreshed based on current position --> Bloc with current position etc + StreamBuilder?
                 // Just send this GoogleMap as Widget from Bloc? -> or manage all attributes over there?
                 // callback to Block: map tapped --> unfocus input, revert to Maps default overlays (in case they changed)
                 StreamBuilder<MapState>(
-                  stream: Provider.of<MapsBloc>(context).mapStateStream,
-                  builder: (context, snapshot) {
+                    stream: mapsBloc.mapStateStream,
+                    builder: (context, snapshot) {
+                      // bloc needs sink to open vehicle popup
+                      mapsBloc.vehicleInfoPopupSink = _vehicleInfoPopupController.sink;
+                      Offset centerOffset = MediaQuery.of(context).size.center(Offset(0,0));
+                      print("centerOffset=$centerOffset");
 
-                    Provider.of<MapsBloc>(context).vehicleInfoPopupSink = _vehicleInfoPopupController.sink;
-                    Offset centerOffset = MediaQuery.of(context).size.center(Offset(0,0));
-                    print("centerOffset=$centerOffset");
+                      print("new map state");
+                      // TODO: this is not optimal --> there may be different updates: only zoom, only position, ... -> or: only use for reposition after search?
+                      if (snapshot.hasData) {
+                        MapState mapState = snapshot.data;
+                        print("new map state: $mapState");
+                        return GoogleMap(
+                          onMapCreated: (mapController) => _onMapCreated(mapController, context),
+                          zoomGesturesEnabled: true,
+                          myLocationEnabled: true,
+                          myLocationButtonEnabled: false,
+                          mapToolbarEnabled: false,
+                          // controllable by bloc
+                          markers: mapState.markers,
+                          mapType: mapState.mapType,
+                          initialCameraPosition: CameraPosition(
+                            target: mapState.mapCenter,
+                            zoom:  MapsBloc.DEFAULT_ZOOM_LEVEL,
+                          ),
 
-                    print("new map state");
-                    // TODO: this is not optimal --> there may be different updates: only zoom, only position, ... -> or: only use for reposition after search?
-                    if (snapshot.hasData) {
-                      MapState mapState = snapshot.data;
-                      print("new map state: $mapState");
-                      return GoogleMap(
-                        onMapCreated: (mapController) => _onMapCreated(mapController, context),
-                        mapType: mapState.mapType,
-                        myLocationEnabled: true,
-                        myLocationButtonEnabled: false,
-                        mapToolbarEnabled: false,
-                        initialCameraPosition: CameraPosition(
-                          target: mapState.mapCenter,
-                          zoom:  MapsBloc.DEFAULT_ZOOM_LEVEL,
-                        ),
-                        markers: mapState.markers,
-                      );
+                          // add bloc controls for these
+                          trafficEnabled: true,
+                        );
+                      }
+
+                      // TODO: default behavior not finished! -> must not just be a container
+                      return Container();
                     }
-
-                    // TODO: default behavior not finished! -> must not just be a container
-                    return Container();
-                  }
                 ),
 
                 /*  TODO: UI controls:
@@ -98,35 +105,43 @@ class _MapScreenState extends State<MapScreen> {
 
                 SearchBar(),
 
-                // TODO: all bottom icons could go into one row with three columns (margin only once)
+                // map overlay buttons, TODO: reposition when into popup opens
+                Positioned(
+                  bottom: 16,
+                  left: 16,
+                  right: 16,
+                  // TODO move into separate class -> MapOverlayButtons
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          CircleButton(iconData: Icons.zoom_in, onPressed: () => mapsBloc.zoomIn(),),
+                          SizedBox(height: 8),
+                          CircleButton(iconData: Icons.zoom_out, onPressed: () => mapsBloc.zoomOut(),),
+                        ],
+                      ),
+                      ScannerButton(),
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          LayersButton(),
+                          SizedBox(height: 8),
+                          CurrentPositionButton(),
+                        ],
+                      ),
+                    ],
 
-                // scanner
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ScannerButton(),
+                  ),
                 ),
-
-
-                // current position
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Container(
-                    margin: EdgeInsets.only(right: 24, bottom: 24),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        LayersButton(),
-                        SizedBox(height: 8),
-                        CurrentPositionButton(),
-                      ],
-                    ),
-                  )
-                ),
-
 
 
               ],
-            ),
+            );
+          },
           ),
       ),
 

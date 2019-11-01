@@ -1,8 +1,12 @@
 import 'package:circ_flutter_challenge/screens/map_screen/map_screen.dart';
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-//void main() => runApp(new MyAppBarTest());
+void main() {
+  // fixes randomly appearing error "Overflow on channel: flutter/lifecycle. Messages on this channel are being discarded in FIFO fashion."
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

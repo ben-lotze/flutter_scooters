@@ -64,9 +64,13 @@ class MapsBloc {
   // definitivly add this? but can not be searched from endpoint! --> just assume there was such a functionality
 
   void _onMapCreated(GoogleMapController controller) async {
+    centerToCurrentUserPosition();
     List<Vehicle> vehicles = await _circApi.getVehicles();
-    vehicles.forEach((v) => print(v));
+    addMapMarkersForVehicles(vehicles);
+  }
 
+
+  void addMapMarkersForVehicles(List<Vehicle> vehicles) {
     List<Marker> markers = List.generate(vehicles.length, (index) {
       Vehicle vehicle = vehicles.elementAt(index);
       return Marker(
@@ -75,14 +79,14 @@ class MapsBloc {
         onTap: () { // TODO: on tap, just put whatever is necessary into streams/subjects
           print("marker tapped for id=${vehicle.id}");
 //          showInfoCard(vehicle);
-          _vehicleInfoPopupSink.add(vehicle);
+          _vehicleInfoPopupSink.add(vehicle);     // TODO: also need the other direction --> when marker clicked: recolor marker!
         },
         consumeTapEvents: true,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueOrange),  // replaceable with custom Widget?
       );
     });
 
-    // TODO: add markers only once? or add each marker (more events)
+    // TODO: add markers only once? or add each marker (more events) -> less events to redraw map
 //    _mapMarkersSubject.addStream(Stream.fromIterable(markers));
 
     // TODO: add method to make this faster --> all possible parameters in brackets {...}
@@ -91,26 +95,16 @@ class MapsBloc {
 //    _mapStateSubject.add(mapState);
 
     updateMapState(markers: Set.of(markers));
-
-    centerToCurrentUserPosition();
   }
-
-
-
-
-
-
 
 
   // TODO: rename to --> position button pressed ot similar --> does two things
   void centerToCurrentUserPosition() async {
-
     GoogleMapController controller = _mapControllerSubject.value;
     if (controller == null) {
-      print("map controller still null, returning");
+      // should be logged
       return;
     }
-
 
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     LatLng userLatLng = LatLng(position.latitude, position.longitude);
@@ -145,11 +139,7 @@ class MapsBloc {
 //
 //    }
 
-
-
-
 //    _mapStateSubject.sink.add(mapState);
-
 //    _mapControllerSubject.value.animateCamera(CameraUpdate.zoomTo(14));
   }
 
@@ -165,25 +155,8 @@ class MapsBloc {
   }
 
 
-  // latitude, longitude
-  void setPosition(LatLng position) {
-
-  }
-
-  // TODO: there is no addMarker method?
-  void addMarkerToMap(LatLng marker) {
-
-  }
 
 
-  void createMarkersForVehicles() {
-    // TODO: this one is ok ->
-  }
-
-
-  void addMarkers() {
-
-  }
 
   void zoomIn() {
     _mapControllerSubject.value.animateCamera(CameraUpdate.zoomIn());
@@ -194,7 +167,7 @@ class MapsBloc {
   }
 
 
-  updateMapState({
+  void updateMapState({
     LatLng mapCenter,
     MapType mapType,
     Set<Marker> markers,
@@ -206,7 +179,7 @@ class MapsBloc {
       mapState.mapCenter = mapCenter;
     }
     if (mapType != null) {
-      mapState.mapType= mapType;
+      mapState.mapType = mapType;
     }
     if (markers!= null) {
       mapState.markers = markers;
