@@ -278,10 +278,12 @@ class DraggableCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(width: _size, height: _size,
+    return Container(
+      width: _size,
+      height: _size,
       key: _key,
       child: Icon(Icons.lock, color: Colors.black),
-      margin: EdgeInsets.only(left: 2),   // TODO border size
+      margin: EdgeInsets.only(left: 0),   // TODO border size
       decoration: BoxDecoration(
         color: Colors.red,
         borderRadius: BorderRadius.circular((_size + 4) / 2),    // TODO border size
