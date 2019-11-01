@@ -227,6 +227,7 @@ class VehicleInfoPopup extends StatelessWidget {
                       ),
 
                       SizedBox(height: 4,),
+                      // TODO: better idea: just one slider with a price + if route calculated: ca. price (different visualization on same slider, with markers?)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
