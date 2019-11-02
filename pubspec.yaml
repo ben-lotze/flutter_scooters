@@ -26,6 +26,7 @@ dependencies:
   flutter_launcher_icons: ^0.7.4
   #swipe_button: ^0.0.2  # not so good
   #slide_button: ^0.2.8
+  intl: ^0.16.0
 
   google_maps_flutter: ^0.5.21+8
   #flutter_google_places: ^0.2.3
@@ -37,7 +38,7 @@ dependencies:
   provider: ^3.1.0+1
   rxdart: ^0.22.2
 
-  # private packages
+  # private packages, TODO: must be public or in module or class in code
   rest_tools:
     path: /Users/lotze/Dev/Projects/flutter/rest_tools
 

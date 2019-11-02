@@ -50,8 +50,26 @@ TimeFormatter
 
 Guthaben irgendwie im BottomPopup anzeigen
 
+Wenn man mehrere Roller gleichzeitig mietet: 50% auf den zweiten, 60% auf den dritten
+
+Tipps:
+- Bitte nicht zu zweit fahren (lustiges Bild dazu)
+- ggf. die Bilder in der Anleitung ersetzen
+
 
 UI
+- map details button --> ggf weg, falls das nciht einfach klappt (oder nur andeuten als mögliche Funktion)
+	-> andeuten mit Snackbar/Popup
+- nach Unlocking -> Marker gegen anderes Icon austauschen (Rund mit Roller drin, Hintergrund orange)
+	- vielleicht weiteren Button anzeigen für entsperrten Roller
+	- theoretisch könnte man mehrere gleichzeitig entsperren!
+- Handling der zwei Roller, die fast übereinander auf der Map sind
+	- Als speziellen Marker anzeigen? (abhängig von Zoom und Entfernung) -> rund mit Zahl, sobald zu viele auf einem Fleck
+	- ranzoomen bei Click
+- Vehicle popup
+	- Flashlight button mit Mini popup --> "Scooter should now signal with flashing lights" (only works when user is nearby to prevent misuse!)
+	- center map button (falls man das Fahrzeug nicht mehr sieht)
+- alle Buttons: visuelles Tap-Feedback auf Material Dings
 - Popup/Keyboard nicht gleichzeitig?
 - Marker must change color when selected!
 - Tooltip-Widget um alle Buttons herum (sofern Widget keinen eigenen Tooltip enthält -> IconButton zB)
@@ -91,6 +109,8 @@ IDEEN
 - Flash/blink --> Scooter erkennen
 - Übersetzen DE/EN
 - Rent history (quick shot for now: Hive to be platform independent: also works in browser)
+	- ggf. Counter per Service im Hintergrund -> dann wird das realisitisch simuliert (auch falls die App zwischendurch tot ist)
+	- in CircApi als Fake-Funktionen anbieten
 
 
 Code/pretty/nice
@@ -100,8 +120,10 @@ Code/pretty/nice
 - alle TODO weg
 - RestTools -> getList / getMap --> duplicates (some more)
 - Annotations: @NotNull usw
-- BEhicle: wann refreshen? Battery bleibt nicht auf x% so lange es im Speicher ist. --> sollte von Server kommen --> assume there was such a functionality and present how code would look like on client
-
+- vehicle: wann refreshen? Battery bleibt nicht auf x% so lange es im Speicher ist. --> sollte von Server kommen --> assume there was such a functionality and present how code would look like on client
+- cleanup
+	- gradle
+	- google services json
 
 some "TODO reviewer:"" im Code --> besodnere Hinweise
 
@@ -117,7 +139,7 @@ Tests
 - permissions: 
 	- camera for barcode scanner
 	- location (obviously) to show scooters nearby
-- Gradle update
+- Gradle update DONE
 - version resolution in gradle -> notwendig? kürzer?
 - search for best practices in challenge apps 
 	- how to stand out?
@@ -154,11 +176,12 @@ jokes?
 
 Some observations about the Android app:
 - asked me a 2nd time (AGB etc), after activated on emulator?
-
+- view/look direction is always wrong (check in my app before mentioning this)
 
 
 Some design decisions
 * Two API keys, to use restrictions on each key.
+* targeting Android API >= 21 for a Flutter barcode scanner package
 * decided to use geolocator instead of location package (seemed like more active devlopment)
 	* migrated to androidx to use this plugin
 * permissions --> in manifest and need to be granted on runtime
@@ -182,4 +205,11 @@ unlock slider
 - At first I made on myself based on Draggable and DragDestination. This did not bring the desired result since the horizontal movement can not be constrained. The Draggable can be dragged outside of the slide borders.
 - Then I tried two libraries and was not satisfied with them.
 - So I made my own.
-- I put a lot of effort into this. I even rebuilt the little extra margin to the draggable's left ;-) Actually, to be honest, because it just didn't want to go away...
+- Fixed the little extra margin to the draggable's left (see original app's screenshots in Playstore)
+- Made it very customizable and will release this as package on pub after some cleanup and testing.
+
+
+
+
+Was fehlt in echter App?
+Was könnte ich in meiner noch machen?

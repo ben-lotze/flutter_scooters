@@ -91,8 +91,8 @@ class MapsBloc {
   }
 
   // TODO: move somewhere else (or up in this class) -> Theme?
-  double _inactiveMarkerHue = BitmapDescriptor.hueOrange;
-  double _activeMarkerHue = BitmapDescriptor.hueGreen;
+  double _inactiveMarkerHue = BitmapDescriptor.hueGreen - 20;
+  double _activeMarkerHue = BitmapDescriptor.hueOrange;
 
 
   // TODO: on popup close -> need to unmark currently marked marker!
@@ -103,12 +103,11 @@ class MapsBloc {
       icon: BitmapDescriptor.defaultMarkerWithHue(isSelected ? _activeMarkerHue : _inactiveMarkerHue),  // TODO: replace with custom Widget
       position: LatLng(vehicle.latitude, vehicle.longitude),
       onTap: () {
-        print("tapped marker=$markerId for vehicle id=${vehicle.id} (lastTapped=$_lastTappedMarkerId)");
+//        print("tapped marker=$markerId for vehicle id=${vehicle.id} (lastTapped=$_lastTappedMarkerId)");
 
         // update currently tapped marker + reset last tapped marker to defaults
         _markersById[markerId] = _createMarker(vehicle, isSelected: true, markerId: markerId);
         if (_lastTappedMarkerId != null && _lastTappedMarkerId != markerId) {
-          print("reset marker=$markerId for vehicle id=${vehicle.id}");
           _markersById[_lastTappedMarkerId] = _createMarker(_vehicleById[int.parse(_lastTappedMarkerId.value)], isSelected: false, markerId: _lastTappedMarkerId);
         }
         updateMapState(markers: Set.of(_markersById.values), updateMapView: true);
@@ -123,9 +122,15 @@ class MapsBloc {
   }
 
 
+  // TODO TEST STYLING (maybe traffic, bike? -> NO, just which elements are on map)
+  // TODO: test: possible with platform channel to Android/iOS map component (which gets embedded)?
+  void testChangeStyle() {
+//    _mapControllerSubject.value.setMapStyle(mapStyle);
+  }
+
 
   Future<void> resetNorth() async {
-    print("resetNorth: ${_mapStateSubject.value}");
+//    print("resetNorth: ${_mapStateSubject.value}");
     await _mapControllerSubject.value.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 0,
         target: _mapStateSubject.value.mapCenter,
@@ -181,8 +186,10 @@ class MapsBloc {
 
   bool addMapDetails(MapDetails mapDetails) {
     // TODO: return value based on reaction of map? (if successful there ot not)
-    bool added = _mapStateSubject.value.addMapDetails(mapDetails);
-    _mapStateSubject.add(_mapStateSubject.value);
+    MapState mapState = _mapStateSubject.value;
+    bool added = mapState.addMapDetails(mapDetails);
+//    _mapStateSubject.add(_mapStateSubject.value);
+    updateMapState(updateMapView: true);
     return added;
   }
 

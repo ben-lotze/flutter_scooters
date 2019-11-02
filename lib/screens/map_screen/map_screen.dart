@@ -7,12 +7,10 @@ import 'package:circ_flutter_challenge/screens/map_screen/buttons/compass_button
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/current_position_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/layers_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/scanner_button.dart';
-import 'package:circ_flutter_challenge/screens/map_screen/map_type_popup/map_details_image_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/search_bar.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/vehicle_info_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -65,7 +63,7 @@ class _MapScreenState extends State<MapScreen> {
                     builder: (context, snapshot) {
                       // bloc needs sink to open vehicle popup
                       mapsBloc.vehicleInfoPopupSink = _vehicleInfoPopupController.sink;
-                      Offset centerOffset = MediaQuery.of(context).size.center(Offset(0,0));
+//                      Offset centerOffset = MediaQuery.of(context).size.center(Offset(0,0));
 //                      print("centerOffset=$centerOffset");
                       // TODO: this is not optimal --> there may be different updates: only zoom, only position, ... -> or: only use for reposition after search?
                       if (snapshot.hasData) {
@@ -80,6 +78,10 @@ class _MapScreenState extends State<MapScreen> {
                         );
                         mapsBloc.updateMapState(cameraPosition: cameraPosition, updateMapView: false);
 
+
+                        bool trafficEnabled = mapState.mapDetails.contains(MapDetails.TRAFFIC);   // TODO: make quicker trafficEnabled getter
+                        print("trafficEnabled? $trafficEnabled");
+
                         return GoogleMap(
                           onMapCreated: (mapController) => _onMapCreated(mapController, context),
                           zoomGesturesEnabled: true,
@@ -89,6 +91,12 @@ class _MapScreenState extends State<MapScreen> {
                           compassEnabled: false,
                           onCameraMove: (position) => mapsBloc.updateMapState(cameraPosition: position, updateMapView: false),
 
+                          onTap: (LatLng tapPosition) {
+                            print("map tapped, could do anything now");
+                            if (_vehiclePopupActive) {
+                              Navigator.of(context).pop();
+                            }
+                          },
                           // controllable by bloc
                           markers: mapState.markers,
                           mapType: mapState.mapType,
@@ -96,7 +104,7 @@ class _MapScreenState extends State<MapScreen> {
 
                           // TODO: add bloc controls for these --> add traffic to map type popup
 
-                          trafficEnabled: mapState.mapDetails.contains(MapDetails.TRAFFIC),
+                          trafficEnabled: trafficEnabled,
                         );
                       }
 
@@ -174,7 +182,11 @@ class _MapScreenState extends State<MapScreen> {
   }
 
 
-  // TODO: should NOT be modal dialog --> two clicks to select different vehicle
+
+  // TODO: should update bloc or something -> TextINput needs to know -> also close this
+  // closing via sink?
+  // TODO: use PersistentBottomSheetController
+  bool _vehiclePopupActive = false;
   void _showVehicleInfoCard(Vehicle vehicle, BuildContext context) {
     showBottomSheet(
       elevation: 16,
@@ -183,7 +195,7 @@ class _MapScreenState extends State<MapScreen> {
       context: context,
       builder: (context) => VehicleInfoPopup(vehicle),
     );
-
+    _vehiclePopupActive = true;
     // start move-animation for scan button
 
   }
