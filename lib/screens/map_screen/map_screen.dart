@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:circ_flutter_challenge/blocs/maps_bloc.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
 import 'package:circ_flutter_challenge/generic_widgets/circle_button.dart';
-import 'package:circ_flutter_challenge/screens/map_screen/vehicle_info_popup.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/current_position_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/layers_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/scanner_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/search_bar.dart';
+import 'package:circ_flutter_challenge/screens/map_screen/vehicle_info_popup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -80,6 +80,8 @@ class _MapScreenState extends State<MapScreen> {
                           myLocationEnabled: true,
                           myLocationButtonEnabled: false,
                           mapToolbarEnabled: false,
+                          compassEnabled: false,
+
                           // controllable by bloc
                           markers: mapState.markers,
                           mapType: mapState.mapType,
@@ -98,16 +100,15 @@ class _MapScreenState extends State<MapScreen> {
                     }
                 ),
 
-                /*  TODO: UI controls:
-                - +/- buttons
-                - scanner button should animate out to bottom when starting search?
-                 */
-
                 SearchBar(),
 
-                // map overlay buttons, TODO: reposition when into popup opens
+
+                /*  TODO: UI controls:
+                - scanner button should animate out to bottom when starting search?
+                - map overlay buttons, TODO: reposition when info popup opens
+                 */
                 Positioned(
-                  bottom: 16,
+                  bottom: 16,   // TODO: a bit more on some (?) iPhones without home button (speaker line hole in screen)
                   left: 16,
                   right: 16,
                   // TODO move into separate class -> MapOverlayButtons

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 
-// custom slider for swipe to confirm/abort
+/// Customizable swipe slider to implement things like swipe to confirm/abort.
+/// Can trigger all sorts of callbacks at specified events.
 class CustomSlider extends StatefulWidget {
 
   // TODO: set all attributes to final (once class is finished)
+  // TODO: fix visual glitch when home=right and draggable is dragged fully to teh left side (small gap is visible)
 
-
+  // TODO: width and height of both draggables as additional params --> calculations are based of them -> alternative: measure/read once
   final Widget draggable = DraggableCircle(48, Colors.deepOrange, Icon(Icons.lock_outline, color: Colors.black54));
   final Widget draggableWhenDroppedOnDestination = DraggableCircle(48, Colors.green, Icon(Icons.lock_open, color: Colors.black54));
   // TODO: maybe add draggableWhenHoveringOverDestination
@@ -23,12 +25,11 @@ class CustomSlider extends StatefulWidget {
 
   Widget backgroundChildWhenDropped = Center(child: Text("Drag to lock"),);
 
-
-  Color trailColor; // or trailWidget(s)? possibly multiple, depending on percentage + customizable change effect/animation
-  // --> needs 2nd animation --> trail background moves together with icons center
+  /// specify a trail that will be following the draggable
+  Color trailColor; // or trailWidget(s)? possibly multiple, depending on percentage + customizable morphing effect/animation
 
   // from 0-100
-  // int allowedPercentageDifferenceToSnap;  // translate to double [0,1]
+  // int snapPercentage;  TODO: add snapPercentage parameter (int [0,100] or double [0, 1])
 
   double borderWidth;
   Color borderColor;
@@ -139,8 +140,7 @@ class CustomSliderState extends State<CustomSlider> {
           _draggableHomeSide == DraggableHome.LEFT ? widget.backgroundChild : widget.backgroundChildWhenDropped,
 
 
-
-          // tail child when dragging
+          // trail while dragging
           Builder(
             builder: (context) {
               return AnimatedBuilder(
@@ -171,17 +171,9 @@ class CustomSliderState extends State<CustomSlider> {
 
 
 
-
+          // draggable
           Builder(
             builder: (context) {
-
-//              RenderBox draggableRenderBox = _draggableKey.currentContext.findRenderObject();
-//
-//              double currentXOffset = draggableRenderBox.localToGlobal(Offset.zero).dx;
-//
-//              // TODO: !!!!!!! weird --> percentage is correct, but px offset is off!!!!!!!!!!!!!!!
-//              print("\nBUILDER: value=${_dragPositionPercentageListener.value}, home=$_draggableHomeSide, currentXOffset=$currentXOffset");
-
               return AnimatedBuilder(
                 animation: _dragPositionPercentageListener,  // TODO: find out why animation does not work based on padding/px instead of [0,1] alignment
 //            animation: internalDxListener,
@@ -195,10 +187,9 @@ class CustomSliderState extends State<CustomSlider> {
 //                padding: EdgeInsets.only(left: internalDxListener.value ?? 0),
 //                child: child,
 //              );
-
                 },
 
-                // visible background
+
                 child: GestureDetector(
 
                   onHorizontalDragUpdate: (DragUpdateDetails details) {
@@ -243,7 +234,7 @@ class CustomSliderState extends State<CustomSlider> {
                         _isHoveringOverDestination = false;
                       }
                     }
-                    // draggable home is right
+                    // draggable home = right side
                     else {
                       if (dxInDragContainer / context.size.width == 0) {
                         print("dest=left -> finish line reached!!! ${dxInDragContainer / context.size.width}");
@@ -311,11 +302,6 @@ class CustomSliderState extends State<CustomSlider> {
     this.setState(() {
       _currentDxListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : 311.42857142857144;   // TODO: use width + align tail on right side!
       _dragPositionPercentageListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : _dragDestinationPercentage + (48 / 311.42857142857144);
-//      _isDroppedOnDestination = false;
-
-//      if (_draggableHomeSide == DraggableHome.LEFT) {
-//        _dragPositionPercentageListener.value = 0;
-//      }
     });
     widget.onDragAborted(); // user callback
     print("onDragAborted end: Home=$_draggableHomeSide");

@@ -62,6 +62,9 @@ UI
 	- How to page: braucht gemeinsames ELement für Hero
 	- Drag to unlock: da kann immer so eine Farbanimation von links nach rechts durchwischen (um das Wischen anzudeuten)
 	- map type: move icon to popup + header: "Select map type"
+	- move scan button to top left when info popup opens?
+	- move bottom buttons up right when info popup opens?
+	  (Layer + Position könnten gleich oben rechts starten --> dann die anderen beiden einfach von unte rechts nach oben links darunter schieben)
 - OHNE SafeArea -> immer korrekte Ausrichtung der Buttons
 - Markers
 	- wie in Google Anleitung
@@ -72,7 +75,9 @@ UI
 - Map
 	- options: only show vehicles nearby (better for navigation functionality)
 	- can start google maps for navigation (extra button) -> iOS + Android
-	- 
+	- Ideen für Steuerung: 
+		- Zwei FInger Perspektivänderung
+		- Ansicht drehen GEHT SCHON (braucht Kompass Icon zum Zurücksetzen auf Norden)
 - general info about scooters -> take from home page
 	- like manual
 	- please ride responsably
@@ -166,6 +171,11 @@ Advantages over current original Circ app:
 * more map features
 
 targeting iOS >9 to use Maps SDK 3.0
+
+
+map overlay buttons:
+- maps plugin offers some buttons, but their position is not customizable and were in the way of my intended interface. So I made my own buttons.
+- this also allowed for animations (when opening/closing vehicle info popup)
 
 
 unlock slider

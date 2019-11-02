@@ -4,8 +4,6 @@ import 'package:circ_flutter_challenge/generic_widgets/drag_slider.dart';
 import 'package:circ_flutter_challenge/screens/user_manual/user_manual.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:slide_button/slide_button.dart';
-import 'package:swipe_button/swipe_button.dart';
 
 
 
@@ -75,56 +73,7 @@ class VehicleInfoPopup extends StatelessWidget {
 
             SizedBox(height: 16,),
 
-          // this one is not so cool
-//            Container(
-//              height: 48,
-//              child: SwipeButton(
-//                initialPosition: SwipePosition.SwipeLeft,
-//                height: 12,
-////              borderRadius: BorderRadius.all(Radius.circular(0)),
-//                content: Container(child: Text("Swipe to unlock")),
-////              thumb: DraggableCircle(24),
-//                onChanged: (position) {
-//                  if (position == SwipePosition.SwipeRight) {
-//                    print("RIGHT");
-//                  }
-//                  if (position == SwipePosition.SwipeRight) {
-//                    print("LEFT");
-//                  }
-//                },
-//
-//              ),
-//            ),
-
-//          Container(
-//            decoration: BoxDecoration(
-//              borderRadius: BorderRadius.all(Radius.circular(24)),
-//              color: Colors.grey
-//            ),
-//            child: SlideButton(
-//              isDraggable: true,
-//              slidingBarColor: Colors.transparent,
-//
-//              height: 48,
-////            borderRadius: 24,
-////              initialSliderPercentage: 0,
-//              backgroundColor: Colors.transparent,
-//              backgroundChild: Center(child: Text("Swipe to unlock")),
-//              slidingChild: DraggableCircle(48),      // TODO: does no longer work like this!
-//              onButtonClosed: () {
-//                print("closed");
-//              },
-//              onButtonOpened: () {
-//                print("opened");
-//              },
-//            ),
-//          ),
-
-
-//            SizedBox(height: 16,),
-
             // unlock slider
-            // TODO: must not move left from start!
             // TODO: goes into separate class -> adjustable! re-usable
             // TODO: should have lock/unlock icon on destination (destination side changes from left to right)
             // increase size on destination (feedback)
@@ -132,79 +81,6 @@ class VehicleInfoPopup extends StatelessWidget {
             // - when dragging: left of Draggable --> different background color (stronger effect of dragging something "sticky")
             // - move into distinct Widget class, make sizes static const class members
             // - when reaching right destination: switch icon to unlocked lock
-//            Container(
-//              width: MediaQuery.of(context).size.width,
-//              height: _DRAGGABLE_CIRCLE_SIZE + 2 * _DRAGGABLE_BAR_BORDER_WIDTH,
-//              child: Stack(
-//
-//                children: <Widget>[
-//
-//                  // background
-//                  Container(
-//                    padding: EdgeInsets.symmetric(horizontal: 2),
-//                    height: _DRAGGABLE_CIRCLE_SIZE + 2 * _DRAGGABLE_BAR_BORDER_WIDTH,
-//                    decoration: BoxDecoration(
-//                        color: Colors.grey,
-//                        borderRadius: BorderRadius.circular((_DRAGGABLE_CIRCLE_SIZE + 2 * _DRAGGABLE_BAR_BORDER_WIDTH) / 2),
-//                        border: Border.all(color: Colors.deepOrange, width: _DRAGGABLE_BAR_BORDER_WIDTH)
-//                    ),
-//                  ),
-//
-//                  Align(
-//                    alignment: Alignment.center,
-//                    child: Text("Drag to unlock"),
-//                  ),
-//
-//                  // draggable
-//                  Align(
-//                    alignment: Alignment.centerLeft,
-//
-//                    child: Draggable(
-//                      axis: Axis.horizontal,
-//                      child: DraggableCircle(_DRAGGABLE_CIRCLE_SIZE),
-//                      feedback: DraggableCircle(_DRAGGABLE_CIRCLE_SIZE),
-//                      childWhenDragging: Container(height: _DRAGGABLE_CIRCLE_SIZE, width: _DRAGGABLE_CIRCLE_SIZE),
-//                      maxSimultaneousDrags: 1,
-//                      data: vehicle.id,
-//                      onDragCompleted: () {
-//                        print("Draggable: yay, drag completed");
-//                        // TODO: keep on right side, switch text
-//                      },
-//                    ),
-//                  ),
-//
-//                  // target
-//                  Align(
-//                    alignment: Alignment.centerRight,
-//                    child: DragTarget<int>(
-//                      builder: (context, List<int> candidates, List<dynamic> rejected) {
-//                        return Container(
-//                          width: _DRAGGABLE_CIRCLE_SIZE + 2*_DRAGGABLE_BAR_BORDER_WIDTH,
-//                          height: _DRAGGABLE_CIRCLE_SIZE + 2*_DRAGGABLE_BAR_BORDER_WIDTH,
-//                          decoration: BoxDecoration(
-//                            color: Colors.transparent,
-//                            border: Border.all(color: Colors.deepOrange, width: _DRAGGABLE_BAR_BORDER_WIDTH, style: BorderStyle.solid),
-//                            borderRadius: BorderRadius.circular((_DRAGGABLE_CIRCLE_SIZE + 2*_DRAGGABLE_BAR_BORDER_WIDTH) / 2),
-//                          ),
-//                        );
-//                      },
-//                      onWillAccept: (data) {
-//                        print("DragTarget: dropping would be ok now");
-//                        return true;
-//                      },
-//                      onAccept: (data) {
-//                        print("DragTarget: drag acceped!!!!!!!!!");
-//                        // TODO: set bool accepted to true -> must all go into separate widget (can be checked in builder to switch widget after accepting)
-//                        //  TODO -> maybe create library for this
-//                      },
-//                    ),
-//                  ),
-//
-//                ],
-//              ),
-//            ),
-
-//            SizedBox(height: 16,),
 
 
             // TODO: this can be much cleaner -> PriceCalculator/PriceFormatter, no blocs?, no new context?
