@@ -22,18 +22,16 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
 
-  /// will show popup for incoming vehicle
+  /// will show popup for one incoming vehicle
   StreamController<Vehicle> _vehicleInfoPopupController; // TODO: or subject to be consistent
 
   @override
   void initState() {
     super.initState();
-    print("initializing vehicle popup sink");
     _vehicleInfoPopupController = StreamController.broadcast();
     _vehicleInfoPopupController.stream.listen((vehicle) {
-      print("info popup stream: incoming id=${vehicle.id}");
       _showVehicleInfoCard(vehicle, this.context);        // TODO: context necessary for dialog -> find better way?
-      // TODO: click should not center map (that is confusing for the user), only change camera if marker would be hidden
+      // TODO: click on marker should not center map (that is confusing for the user), only change camera if marker would be hidden
     });
   }
 
@@ -49,11 +47,11 @@ class _MapScreenState extends State<MapScreen> {
 
       // need new context to find bloc via context
       child: Scaffold(
+
         body: Builder(
           builder: (context) {
             MapsBloc mapsBloc = Provider.of<MapsBloc>(context);
             return Stack(
-
               children: <Widget>[
 
                 // also put map into separate class

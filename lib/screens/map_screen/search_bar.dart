@@ -12,22 +12,26 @@ class SearchBar extends StatelessWidget {
       top: 8.0,
       left: 8.0,
       right: 8.0,
-      // appbar is used to profit from automatic positioning under status bar (while using transparent status bar)
+      // appbar is used to have automatic positioning under transparent status bar
       child: AppBar(
+        titleSpacing: 0,
         backgroundColor: Colors.transparent,
-        elevation: 16.0,
-        leading: null, // Container(width: 0, height: 0, margin: EdgeInsets.all(0), padding: EdgeInsets.all(0), color: Colors.blue,),  // suppress back button
-        automaticallyImplyLeading: false,
-        title: Card(
-          margin: EdgeInsets.all(0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
-          child: Container(
-//              decoration: BoxDecoration(border: Border.all(width: 1, color: Colors.blue)),
-              height: 48,
-              width: MediaQuery.of(context).size.width,
-              margin: EdgeInsets.all(0),
-              padding: EdgeInsets.all(0),
-              child: Row(
+        elevation: 0.0,
+        primary: true,  // must be true, otherwise behind statusBar/topNotch
+        bottomOpacity: 0,
+        leading: null, // suppress back button
+        automaticallyImplyLeading: false, // suppress back button
+//        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
+        title: Container(
+          height: 48,
+          width: MediaQuery.of(context).size.width,
+          margin: EdgeInsets.all(8),  // necessary for shadow/elevation of contained Card
+          padding: EdgeInsets.all(0),
+
+          child: Card(
+            margin: EdgeInsets.all(0),
+            elevation: 8.0,
+            child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -48,7 +52,7 @@ class SearchBar extends StatelessWidget {
 
                   IconButton(icon: Icon(Icons.mic),),
                 ],
-              )
+              ),
           ),
         ),
       ),
