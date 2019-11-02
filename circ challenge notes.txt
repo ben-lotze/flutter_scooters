@@ -52,17 +52,27 @@ Guthaben irgendwie im BottomPopup anzeigen
 
 
 UI
-- Marker mus change color when selected!
- -Tooltip-Widget um alle Buttons herum (sofern Widget keinen eigenen Tooltip enthält -> IconButton zB)
+- Popup/Keyboard nicht gleichzeitig?
+- Marker must change color when selected!
+- Tooltip-Widget um alle Buttons herum (sofern Widget keinen eigenen Tooltip enthält -> IconButton zB)
 - Web !!!
 - StartAnimation
 	- Bilder von Instgram, fliegen alle ins Zentrum und verschwinden da im Circ Logo
+- Animationen
+	- How to page: braucht gemeinsames ELement für Hero
+	- Drag to unlock: da kann immer so eine Farbanimation von links nach rechts durchwischen (um das Wischen anzudeuten)
+	- map type: move icon to popup + header: "Select map type"
 - OHNE SafeArea -> immer korrekte Ausrichtung der Buttons
 - Markers
 	- wie in Google Anleitung
 	- kein Hint-Poptup -> Card unten am Bildschirm
 	- Pin umfärben -> wie? sind alle in Map mit K=rollerId (als inline comment am Ende der Zeile! "// K=scooterId")
 
+	- falls Places intergrierbar: extra Markers für Places/Suchergebnis
+- Map
+	- options: only show vehicles nearby (better for navigation functionality)
+	- can start google maps for navigation (extra button) -> iOS + Android
+	- 
 - general info about scooters -> take from home page
 	- like manual
 	- please ride responsably
@@ -93,6 +103,7 @@ some "TODO reviewer:"" im Code --> besodnere Hinweise
 Tests
 - QR Scanner: mit pngs scannen lassen und codierten Code darin vergleichen
 - calculateFormattedPriceForDuration: für 121s = 3m abrechnen usw., 1s sind basePreis plus 1 Minute ("// customer service may be happier if we don't do this.")
+- 
 
 ---- TODO: ----
 
@@ -102,12 +113,11 @@ Tests
 	- camera for barcode scanner
 	- location (obviously) to show scooters nearby
 - Gradle update
-- git
 - version resolution in gradle -> notwendig? kürzer?
 - search for best practices in challenge apps 
 	- how to stand out?
 	- things they expect that are not obvious?
-- Test in Android and iOS!
+- Manual Test in Android and iOS!
 - Maps API: Key restrictions? (currently none) -> JA, GOogle empfiehlt das
 	https://developers.google.com/maps/documentation/android-sdk/get-api-key
 	https://developers.google.com/maps/documentation/ios-sdk/get-api-key
@@ -116,11 +126,6 @@ Tests
 
 
 
-location -> is there a class? or do my own? 
-latitude
-longitude
--> no, just
-
 CircApi
 vehicles
 .search(longitude, latitude, maxDistance)	// distance: is there a class? like Duration? -> otehrwise make my own --> look in Duration how to to calculations
@@ -128,6 +133,7 @@ vehicles
 .add(Vehicle)
 .update(Vehicle)		???
 .update(id, {param1, param2, ...})
+.rideHistory
 
 --> maybe add them and throw not implemented yet Exceptions?
 
@@ -141,13 +147,29 @@ jokes?
 
 
 
-SOMe observations about the Android app:
+Some observations about the Android app:
 - asked me a 2nd time (AGB etc), after activated on emulator?
 
 
 
 Some design decisions
-* Two API keys, to use restrictions
+* Two API keys, to use restrictions on each key.
 * decided to use geolocator instead of location package (seemed like more active devlopment)
 	* migrated to androidx to use this plugin
 * permissions --> in manifest and need to be granted on runtime
+* A click on a vehicle in the map should not center map (that is confusing for the user). --> Only if the needle would otherwise be hidden by the popup!
+
+
+Advantages over current original Circ app:
+* original drag handler has UI glitches (circle is not centered, has different paddings top/bottom/left, there is an unnecessary orange line under the circle)
+* switch to current position in animated
+* more map features
+
+targeting iOS >9 to use Maps SDK 3.0
+
+
+unlock slider
+- At first I made on myself based on Draggable and DragDestination. This did not bring the desired result since the horizontal movement can not be constrained. The Draggable can be dragged outside of the slide borders.
+- Then I tried two libraries and was not satisfied with them.
+- So I made my own.
+- I put a lot of effort into this. I even rebuilt the little extra margin to the draggable's left ;-) Actually, to be honest, because it just didn't want to go away...

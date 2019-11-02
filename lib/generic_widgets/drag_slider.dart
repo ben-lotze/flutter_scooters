@@ -1,4 +1,3 @@
-import 'package:circ_flutter_challenge/screens/map_screen/vehicle_info_popup.dart';
 import 'package:flutter/material.dart';
 
 
@@ -12,15 +11,24 @@ class CustomSlider extends StatefulWidget {
   final Widget draggableWhenDroppedOnDestination = DraggableCircle(48, Colors.green, Icon(Icons.lock_open, color: Colors.black54));
   // TODO: maybe add draggableWhenHoveringOverDestination
 
-  Color backgroundColor;
+//  Color backgroundColor;
   // TODO: background container should be a Widget! (with any child and Text and whatever) -> fallback to my default
-  Widget backgroundChild = Center(child: Text("Drag to unlock"),);
+  Widget backgroundChild = Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.all(Radius.circular(24)),
+      color: Colors.orange,
+    ),
+    child: Center(child: Text("Drag to unlock"),)
+  );
+
   Widget backgroundChildWhenDropped = Center(child: Text("Drag to lock"),);
 
 
+  Color trailColor; // or trailWidget(s)? possibly multiple, depending on percentage + customizable change effect/animation
+  // --> needs 2nd animation --> trail background moves together with icons center
+
   // from 0-100
   // int allowedPercentageDifferenceToSnap;  // translate to double [0,1]
-
 
   double borderWidth;
   Color borderColor;
@@ -129,6 +137,40 @@ class CustomSliderState extends State<CustomSlider> {
 
           // background depends on draggable home position
           _draggableHomeSide == DraggableHome.LEFT ? widget.backgroundChild : widget.backgroundChildWhenDropped,
+
+
+
+          // tail child when dragging
+          Builder(
+            builder: (context) {
+              return AnimatedBuilder(
+                animation: _dragPositionPercentageListener,
+                builder: (context, child) {
+                  return Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0, style: BorderStyle.none),
+                        borderRadius: BorderRadius.horizontal(
+                            left: _draggableHomeSide == DraggableHome.LEFT ? Radius.circular(24) : Radius.zero,
+                            right: _draggableHomeSide == DraggableHome.LEFT ? Radius.zero : Radius.circular(24),
+                        ),
+                        color: Colors.green,
+                      ),
+                      height: 48,
+//                      height: _currentDxListener.value <= 48 ? _currentDxListener.value : 48,
+//                    width: MediaQuery.of(context).size.width * _dragPositionPercentageListener.value,
+                      width: _draggableHomeSide == DraggableHome.LEFT ? _currentDxListener.value + 24 : 311.42857142857144 - _currentDxListener.value,
+                      margin: EdgeInsets.only(left: _draggableHomeSide == DraggableHome.LEFT ? 0 : _currentDxListener.value + 24)
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+
+
+
 
           Builder(
             builder: (context) {
@@ -267,6 +309,7 @@ class CustomSliderState extends State<CustomSlider> {
     // TODO: animation instead of immediate reset
 
     this.setState(() {
+      _currentDxListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : 311.42857142857144;   // TODO: use width + align tail on right side!
       _dragPositionPercentageListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : _dragDestinationPercentage + (48 / 311.42857142857144);
 //      _isDroppedOnDestination = false;
 
