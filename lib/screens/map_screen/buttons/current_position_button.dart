@@ -1,7 +1,6 @@
 import 'package:circ_flutter_challenge/blocs/maps_bloc.dart';
 import 'package:circ_flutter_challenge/generic_widgets/circle_button.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 class CurrentPositionButton extends StatelessWidget {

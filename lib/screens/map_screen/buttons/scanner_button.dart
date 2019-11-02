@@ -1,3 +1,4 @@
+import 'package:circ_flutter_challenge/screens/scanner/scanner_2.dart';
 import 'package:flutter/material.dart';
 
 
@@ -19,6 +20,7 @@ class ScannerButton extends StatelessWidget {
 
   void onPressed(BuildContext context) async {
 //    scan();
+//    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CameraApp()));   // quick qr scanner -> build problems
   }
 
 

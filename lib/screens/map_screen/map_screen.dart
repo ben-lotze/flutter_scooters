@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:circ_flutter_challenge/blocs/maps_bloc.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
 import 'package:circ_flutter_challenge/generic_widgets/circle_button.dart';
+import 'package:circ_flutter_challenge/screens/map_screen/buttons/compass_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/current_position_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/layers_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/buttons/scanner_button.dart';
+import 'package:circ_flutter_challenge/screens/map_screen/map_type_popup/map_details_image_button.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/search_bar.dart';
 import 'package:circ_flutter_challenge/screens/map_screen/vehicle_info_popup.dart';
 import 'package:flutter/cupertino.dart';
@@ -54,24 +56,30 @@ class _MapScreenState extends State<MapScreen> {
             return Stack(
               children: <Widget>[
 
-                // also put map into separate class
+                // TODO also put map into separate class
                 // TODO: maybe StreamBuilder is not necessary here? (is this ever refreshed?)
                 // TODO: needs to  be refreshed based on current position --> Bloc with current position etc + StreamBuilder?
-                // Just send this GoogleMap as Widget from Bloc? -> or manage all attributes over there?
-                // callback to Block: map tapped --> unfocus input, revert to Maps default overlays (in case they changed)
+                // TODO callback to Block: map tapped --> unfocus input, revert to Maps default overlays (in case they changed)
                 StreamBuilder<MapState>(
                     stream: mapsBloc.mapStateStream,
                     builder: (context, snapshot) {
                       // bloc needs sink to open vehicle popup
                       mapsBloc.vehicleInfoPopupSink = _vehicleInfoPopupController.sink;
                       Offset centerOffset = MediaQuery.of(context).size.center(Offset(0,0));
-                      print("centerOffset=$centerOffset");
-
-                      print("new map state");
+//                      print("centerOffset=$centerOffset");
                       // TODO: this is not optimal --> there may be different updates: only zoom, only position, ... -> or: only use for reposition after search?
                       if (snapshot.hasData) {
                         MapState mapState = snapshot.data;
-                        print("new map state: $mapState");
+//                        print("new map state: $mapState");
+//                        print("refreshing: contains traffic? ${mapState.mapDetails.contains(MapDetails.TRAFFIC)}");
+
+                        CameraPosition cameraPosition = CameraPosition(
+                          bearing: mapState.cameraPosition?.bearing ?? 0,
+                          target: mapState.mapCenter,
+                          zoom:  MapsBloc.DEFAULT_ZOOM_LEVEL,   // TODO: do not always use default
+                        );
+                        mapsBloc.updateMapState(cameraPosition: cameraPosition, updateMapView: false);
+
                         return GoogleMap(
                           onMapCreated: (mapController) => _onMapCreated(mapController, context),
                           zoomGesturesEnabled: true,
@@ -79,17 +87,16 @@ class _MapScreenState extends State<MapScreen> {
                           myLocationButtonEnabled: false,
                           mapToolbarEnabled: false,
                           compassEnabled: false,
+                          onCameraMove: (position) => mapsBloc.updateMapState(cameraPosition: position, updateMapView: false),
 
                           // controllable by bloc
                           markers: mapState.markers,
                           mapType: mapState.mapType,
-                          initialCameraPosition: CameraPosition(
-                            target: mapState.mapCenter,
-                            zoom:  MapsBloc.DEFAULT_ZOOM_LEVEL,
-                          ),
+                          initialCameraPosition: cameraPosition,
 
-                          // add bloc controls for these
-                          trafficEnabled: true,
+                          // TODO: add bloc controls for these --> add traffic to map type popup
+
+                          trafficEnabled: mapState.mapDetails.contains(MapDetails.TRAFFIC),
                         );
                       }
 
@@ -115,18 +122,30 @@ class _MapScreenState extends State<MapScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
+                      // left side
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
-                          CircleButton(iconData: Icons.zoom_in, onPressed: () => mapsBloc.zoomIn(),),
+                          CircleButton(
+                            iconData: Icons.zoom_in,
+                            onPressed: () => Provider.of<MapsBloc>(context).zoomIn(),),
                           SizedBox(height: 8),
-                          CircleButton(iconData: Icons.zoom_out, onPressed: () => mapsBloc.zoomOut(),),
+                          CircleButton(
+                            iconData: Icons.zoom_out,
+                            onPressed: () => Provider.of<MapsBloc>(context).zoomOut(),
+                          ),
                         ],
                       ),
                       ScannerButton(),
+                      // right side
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
+//                          CircleButton(
+//                            iconData: Icons.zoom_out_map, // make stateful button with compass needle
+//                            onPressed: () => Provider.of<MapsBloc>(context).resetNorth(),),
+                          CompassButton(parentContext: context,),
+                          SizedBox(height: 8),
                           LayersButton(),
                           SizedBox(height: 8),
                           CurrentPositionButton(),
@@ -148,7 +167,8 @@ class _MapScreenState extends State<MapScreen> {
   }
 
 
-  void _onMapCreated(GoogleMapController controller, BuildContext context) async {
+  void _onMapCreated(GoogleMapController controller, BuildContext context) {
+    print("onMapCreated !!!!!!!");
     // update bloc with map controller to be able to send updates from the bloc
     Provider.of<MapsBloc>(context).mapControllerSink.add(controller);
   }
@@ -163,6 +183,9 @@ class _MapScreenState extends State<MapScreen> {
       context: context,
       builder: (context) => VehicleInfoPopup(vehicle),
     );
+
+    // start move-animation for scan button
+
   }
 
 

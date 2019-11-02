@@ -116,9 +116,9 @@ class CustomSliderState extends State<CustomSlider> {
   @override
   Widget build(BuildContext context) {
 
-    print("\nBUILD: value=${_dragPositionPercentageListener.value}, home=$_draggableHomeSide"
-//        ", isDropped=$_isDroppedOnDestination"
-    );
+//    print("\nBUILD: value=${_dragPositionPercentageListener.value}, home=$_draggableHomeSide"
+////        ", isDropped=$_isDroppedOnDestination"
+//    );
 
 
     return Container(
