@@ -6,6 +6,11 @@ import 'package:flutter/material.dart';
 
 class SearchBar extends StatelessWidget {
 
+  final TextEditingController _editController;
+
+  SearchBar()
+      : _editController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Positioned(
@@ -39,6 +44,7 @@ class SearchBar extends StatelessWidget {
 
                   Expanded(
                     child: TextFormField(
+                      controller: _editController,
                       textAlign: TextAlign.start,
                       minLines: 1,
                       maxLines: 1,
@@ -46,7 +52,22 @@ class SearchBar extends StatelessWidget {
                         hintText: "Enter destination",
                         contentPadding: EdgeInsets.all(8),
                         border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          tooltip: "Clear text input",
+                          icon: Icon(Icons.close),
+                          onPressed: () {
+                            _editController.clear();
+                          }
+                        ),
                       ),
+
+                      onFieldSubmitted: (content) {
+                        // real behavior not implemented yet
+                        Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text("This would start a search for '$content'.", maxLines: 3,),
+                          behavior: SnackBarBehavior.floating,)
+                        );
+                      },
                     ),
                   ),
 
