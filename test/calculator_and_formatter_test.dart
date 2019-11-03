@@ -3,13 +3,18 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
 
+  PriceCalculatorBloc bloc = PriceCalculatorBloc();
+
   test("test time formatter", () {
-    // TODO: add time formatting or remove test stub
+    expect(bloc.formatTime(45), "45 s");
+    expect(bloc.formatTime(60), "1 min");
+    expect(bloc.formatTime(66), "1m 6s");
+    expect(bloc.formatTime(180), "3 minutes");
+    expect(bloc.formatTime(181), "3m 1s");
   });
 
 
   test("test price calculator and formatter", () {
-    PriceCalculatorBloc bloc = PriceCalculatorBloc();
 
     // de_DE
     expect(bloc.formatPriceInEuro(100, "€", locale: "de_DE"), "1 €");

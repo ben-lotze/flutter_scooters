@@ -22,12 +22,10 @@ class ScannerButton extends StatelessWidget {
 
   void onPressed(BuildContext context) async {
     String qrCodeString = await scan();
-    VehicleQrCode qrCode = VehicleQrCode.fromJsonString(qrCodeString);
-    print(qrCode);
-//    print("waiting 2s");
-//    await Future.delayed(Duration(seconds: 2));
-//    print("waited 2s, will start result screen");
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanResultScreen(qrCode: qrCode)));
+    print(qrCodeString);
+//    VehicleQrCode qrCode = VehicleQrCode.fromJsonString(qrCodeString);
+//    print(qrCode);
+//    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanResultScreen(qrCode: qrCode)));
 
 
     //    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CameraApp()));   // quick qr scanner -> build problems
@@ -49,7 +47,7 @@ class ScannerButton extends StatelessWidget {
       }
     }
     on FormatException{
-      return 'null (User returned using the "back"-button before scanning anything. Result)';
+      return 'User returned using the "back"-button before scanning anything.)';
     }
     catch (e) {
       return 'Unknown error: $e';

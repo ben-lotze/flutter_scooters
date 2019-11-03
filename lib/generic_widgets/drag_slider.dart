@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 
-/// Customizable swipe slider to implement things like swipe to confirm/abort.
+/// <b>WORK IN PROGRESS</b>
+/// <br>Customizable swipe slider to implement things like swipe to confirm/abort.
 /// Can trigger all sorts of callbacks at specified events.
 class CustomSlider extends StatefulWidget {
 
@@ -78,8 +79,6 @@ class CustomSliderState extends State<CustomSlider> {
   DraggableHome _draggableHomeSide = DraggableHome.LEFT;
   final GlobalKey _draggableKey = GlobalKey();
 
-//  final GlobalKey _draggableKeyLeft = GlobalKey();
-//  final GlobalKey _draggableKeyRight = GlobalKey();
 //  Widget _draggable;
 //  Widget _draggableDroppedOnDestination;
 //  Widget _draggableAio;
@@ -91,15 +90,8 @@ class CustomSliderState extends State<CustomSlider> {
 
   @override
   void initState() {
-//    valueListener.addListener(notifyParent);
     super.initState();
   }
-
-//  void notifyParent() {
-//    if (widget.valueChanged != null) {
-//      widget.valueChanged(valueListener.value);
-//    }
-//  }
 
 
 
@@ -130,7 +122,7 @@ class CustomSliderState extends State<CustomSlider> {
       height: 52.0,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.symmetric(horizontal: 0.0),
-      margin: EdgeInsets.all(0.0),
+      margin: EdgeInsets.symmetric(horizontal: 32),
 
       // new context necessary
       child: Stack(
@@ -184,7 +176,7 @@ class CustomSliderState extends State<CustomSlider> {
                   );
 
 //              return Padding(
-//                padding: EdgeInsets.only(left: internalDxListener.value ?? 0),
+//                padding: EdgeInsets.only(left: _currentDxListener.value ?? 0),
 //                child: child,
 //              );
                 },

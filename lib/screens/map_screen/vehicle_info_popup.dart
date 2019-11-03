@@ -98,7 +98,10 @@ class VehicleInfoPopup extends StatelessWidget {
                     children: <Widget>[
 
                       Text("Base price: ${calculator.formatPriceInEuro(calculator.basePriceInCents, vehicle.currency)} "
-                          "+ ${calculator.formatPriceInEuro(vehicle.price, vehicle.currency)} / ${vehicle.priceTime}",
+                          "+ ${calculator.formatPriceInEuro(vehicle.price, vehicle.currency)} "
+//                          "/ ${vehicle.priceTime}"
+                          "/ ${calculator.formatTime(vehicle.priceTime)}"
+                        ,
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
 
@@ -107,14 +110,14 @@ class VehicleInfoPopup extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          CircleAvatar(child: Text("5m", style: TextStyle(fontSize: 12),)),
-                          Text("${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}"),
-                          SizedBox(width: 8),
-                          CircleAvatar(child: Text("10m", style: TextStyle(fontSize: 12))),
-                          Text("${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}"),
-                          SizedBox(width: 8),
-                          CircleAvatar(child: Text("15m", style: TextStyle(fontSize: 12))),
-                          Text("${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 15))}"),
+//                          CircleAvatar(child: Text("5m", style: TextStyle(fontSize: 12),)),
+                          Text("5': ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}"),
+                          SizedBox(width: 16),
+//                          CircleAvatar(child: Text("10m", style: TextStyle(fontSize: 12))),
+                          Text("10': ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}"),
+                          SizedBox(width: 16),
+//                          CircleAvatar(child: Text("15m", style: TextStyle(fontSize: 12))),
+                          Text("15': ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 15))}"),
                         ],
                       ),
 

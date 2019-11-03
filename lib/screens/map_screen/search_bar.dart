@@ -4,12 +4,31 @@ import 'package:flutter/material.dart';
 // TODO: make unfocus work (clicking anywhere else)
 // TODO: autocomplete with maps data
 
-class SearchBar extends StatelessWidget {
+class SearchBar extends StatefulWidget {
 
   final TextEditingController _editController;
 
   SearchBar()
       : _editController = TextEditingController();
+
+  @override
+  _SearchBarState createState() => _SearchBarState();
+
+}
+
+class _SearchBarState extends State<SearchBar> {
+
+  bool hasContent;
+
+  FocusNode focus;
+
+  @override
+  void initState() {
+    super.initState();
+    focus = FocusNode();
+
+    hasContent = false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,22 +63,31 @@ class SearchBar extends StatelessWidget {
 
                   Expanded(
                     child: TextFormField(
-                      controller: _editController,
+                      focusNode: focus,
+                      controller: widget._editController,
                       textAlign: TextAlign.start,
                       minLines: 1,
                       maxLines: 1,
+                      onChanged: onChanged,
+                      onTap: onTap,
                       decoration: InputDecoration(
                         hintText: "Enter destination",
                         contentPadding: EdgeInsets.all(8),
                         border: InputBorder.none,
-                        suffixIcon: IconButton(
+
+                        suffixIcon: hasContent ? IconButton(
                           tooltip: "Clear text input",
                           icon: Icon(Icons.close),
-                          onPressed: () {
-                            _editController.clear();
-                          }
-                        ),
+                          onPressed: () => clearInput()
+                        ) : Container(width: 0, height: 0, color: Colors.transparent,),
+
                       ),
+
+
+                        validator: (str) {
+                          return str;
+                        },
+
 
                       onFieldSubmitted: (content) {
                         // real behavior not implemented yet
@@ -79,4 +107,34 @@ class SearchBar extends StatelessWidget {
       ),
     );
   }
+
+
+  void test(String content) {
+    hasContent = (content!= null && content.length > 0) ? true : false;
+    setState(() {});
+  }
+
+  void onChanged(String value) {
+    test(value);
+  }
+
+  void onTap() {
+    test(widget._editController.text);
+  }
+
+  void clearInput() {
+    focus.unfocus();
+    hasContent = false;
+//    widget._editController.selection = TextSelection(baseOffset: 0);
+    widget._editController.clear();
+
+    setState(() {
+
+    });
+  }
+
+
+
+
+
 }

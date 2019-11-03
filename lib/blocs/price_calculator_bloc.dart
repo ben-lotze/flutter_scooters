@@ -31,6 +31,26 @@ class PriceCalculatorBloc {
   }
 
 
+
+  String formatTime(int seconds) {
+    if (seconds < 60) {
+      return "$seconds s";
+    }
+    else if (seconds == 60) {
+      return "1 min";
+    }
+
+    int minutes = seconds ~/ 60;
+    int restSeconds = seconds % 60;
+    if(restSeconds > 0) {
+      return "${minutes}m ${restSeconds}s";
+    }
+
+    // rest == 0
+    return "$minutes minutes";
+  }
+
+
   dispose() {
     // nothing to dispose
   }
