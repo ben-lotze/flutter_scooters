@@ -7,15 +7,14 @@ more blocs:
 
 import 'dart:async';
 import 'dart:collection';
+import 'dart:math' as math;
 
 import 'package:circ_flutter_challenge/blocs/circ_api.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
-import 'package:circ_flutter_challenge/screens/map_screen/map_type_popup/map_details_image_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:rxdart/rxdart.dart';
-import 'dart:math' as math;
 
 class MapsBloc {
 
@@ -40,6 +39,7 @@ class MapsBloc {
 
   MapsBloc._internal() {
     _circApi = CircApi();
+
 
     _mapStateSubject = BehaviorSubject.seeded(MapState());  // TODO: with defaults, and last position (persisted)
 
@@ -134,7 +134,7 @@ class MapsBloc {
     await _mapControllerSubject.value.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 0,
         target: _mapStateSubject.value.mapCenter,
-        zoom: 14)
+        zoom: 14) // TODO, not always 14, current zoom! -_> must go into block on each camera change
     ));
   }
 
