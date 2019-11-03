@@ -10,6 +10,7 @@ class CurrentPositionButton extends StatelessWidget {
     return CircleButton(
       iconData: Icons.my_location,
       heroTag: "current_position_button",
+      tooltip: "Center map view to your current position",
       onPressed: () => _onPressed(context),
     );
   }

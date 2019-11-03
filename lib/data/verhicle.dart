@@ -34,13 +34,14 @@ class Vehicle {
     @required this.price,
     @required this.priceTime,
     @required this.currency
-  }); 
+  }) {
+    if (id == null) throw ArgumentError.notNull("id must not be null");
+  }
 
 
   /// [jsonMap] from REST endpoint
   factory Vehicle.fromJson(Map<String, dynamic> jsonMap) {
     if (jsonMap == null || jsonMap.length == 0) {
-//      throw ArgumentError("cannot parse Vehicle from provided map which is either null or empty");
       throw Exception("cannot parse Vehicle from provided map which is either null or empty");
     }
     return Vehicle._create(

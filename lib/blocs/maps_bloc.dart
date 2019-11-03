@@ -139,7 +139,7 @@ class MapsBloc {
   }
 
   // TODO: rename to --> position button pressed ot similar --> does two things
-  void centerToCurrentUserPosition() async {
+  Future<void> centerToCurrentUserPosition() async {
 //    GoogleMapController controller = _mapControllerSubject.value;
 //    if (controller == null) {
 //      // should be logged
@@ -149,7 +149,10 @@ class MapsBloc {
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     LatLng userLatLng = LatLng(position.latitude, position.longitude);
     updateMapState(mapCenter: userLatLng, updateMapView: false);  // no update: do with animation
-    _mapControllerSubject.value.animateCamera(CameraUpdate.newLatLng(userLatLng));
+
+    await _mapControllerSubject.value.animateCamera(CameraUpdate.newLatLng(userLatLng));
+
+
 //    _mapControllerSubject.value.moveCamera(CameraUpdate.newLatLng(userLatLng));
 
 //    print("\nuserLatLng: $userLatLng");

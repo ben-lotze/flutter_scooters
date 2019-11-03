@@ -135,10 +135,14 @@ class _MapScreenState extends State<MapScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           CircleButton(
+                            key: Key("zoom_in_button"),
+                            tooltip: "Zoom in",
                             iconData: Icons.zoom_in,
                             onPressed: () => Provider.of<MapsBloc>(context).zoomIn(),),
                           SizedBox(height: 8),
                           CircleButton(
+                            key: Key("zoom_out_button"),
+                            tooltip: "Zoom out",
                             iconData: Icons.zoom_out,
                             onPressed: () => Provider.of<MapsBloc>(context).zoomOut(),
                           ),
@@ -154,7 +158,7 @@ class _MapScreenState extends State<MapScreen> {
 //                            onPressed: () => Provider.of<MapsBloc>(context).resetNorth(),),
                           CompassButton(parentContext: context,),
                           SizedBox(height: 8),
-                          LayersButton(),
+                          MapLayersButton(),
                           SizedBox(height: 8),
                           CurrentPositionButton(),
                         ],

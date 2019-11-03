@@ -38,13 +38,15 @@ class MapTypePopup extends StatelessWidget {
               children: <Widget>[
                 MapTypeImageButton(
                   text: "Normal",
+                  tooltip: MapTypeImageButton.TOOLTIP_NORMAL,
                   imgAsset: "assets/img_icons/map_type_normal.png",
                   mapType: MapType.normal,
                   onTap: () => mapsBloc.updateMapState(mapType: MapType.normal),
                   context: parentContext,
                 ),
                 MapTypeImageButton(
-                  text: "Satellite" ,
+                  text: "Satellite",
+                  tooltip: MapTypeImageButton.TOOLTIP_SATELLITE,
                   imgAsset: "assets/img_icons/map_type_satellite.png",
                   mapType: MapType.satellite,
                   onTap: () => mapsBloc.updateMapState(mapType: MapType.satellite),
@@ -52,6 +54,7 @@ class MapTypePopup extends StatelessWidget {
                 ),
                 MapTypeImageButton(
                   text: "Terrain" ,
+                  tooltip: MapTypeImageButton.TOOLTIP_TERRAIN,
                   imgAsset: "assets/img_icons/map_type_terrain_512.png",
                   mapType: MapType.terrain,
                   onTap: () => mapsBloc.updateMapState(mapType: MapType.terrain),
@@ -72,10 +75,11 @@ class MapTypePopup extends StatelessWidget {
 
                 MapDetailsImageButton(
                   text: "Traffic",
+                  tooltip: MapDetailsImageButton.TOOLTIP_TRAFFIC,
                   imgAsset: "assets/img_icons/map_type_normal.png",
                   mapDetails: MapDetails.TRAFFIC,
                   onTap: () => () {
-                    // no additional adtions atm
+                    // no additional actions atm
                     },
                   context: parentContext,
                 ),
