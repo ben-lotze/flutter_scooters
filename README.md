@@ -43,19 +43,13 @@ Libraries
 ## Additionally implemented features
 
 #### Platform specific launcher icons
-<img src="readme_resources/launcher_ios.png" width="100"/>
-<img src="readme_resources/launcher_android.jpg" width="100"/>
+<img src="readme_resources/launcher_ios.png" width="100"/>   <img src="readme_resources/launcher_android.jpg" width="100"/>
 
 #### QR code scanner
 
 Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 
- <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-1.png" width="250" style="border:10;">   
- <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-2.png" width="250">   
- <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-3.png" width="250">   
- <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-4.png" width="250">   
- <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-5.png" width="250">   
- <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-6.png" width="250">   
+<img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-1.png" width="250" style="border:10;">   <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-2.png" width="250">   <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-3.png" width="250">   <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-4.png" width="250">   <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-5.png" width="250">   <img src="readme_resources/vehicle_qr_codes/qrcode-vehicle-id-6.png" width="250">   
 
 <i>Camera is not working in iOS simulator as the simulator has no camera support.</i>
 
