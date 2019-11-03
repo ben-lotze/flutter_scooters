@@ -37,9 +37,12 @@ class Vehicle {
   }); 
 
 
-  // TODO documentation, which required and why
   /// [jsonMap] from REST endpoint
   factory Vehicle.fromJson(Map<String, dynamic> jsonMap) {
+    if (jsonMap == null || jsonMap.length == 0) {
+//      throw ArgumentError("cannot parse Vehicle from provided map which is either null or empty");
+      throw Exception("cannot parse Vehicle from provided map which is either null or empty");
+    }
     return Vehicle._create(
       id: jsonMap["id"],
       name: jsonMap["name"],

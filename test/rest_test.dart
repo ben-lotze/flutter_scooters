@@ -25,39 +25,34 @@ class MockClient extends Mock implements Client {
 
 //  @override
 //  Future<Response> get(url, {Map<String, String> headers}) async {
-//    File jsonFile = File("test/vehicles_json_response.json");
+//    File jsonFile = File("test/response_all_vehicles.json");
 //    String content = await jsonFile.readAsString();
 //    return Response(content, 200);
 //  }
 }
 
 
-main() {
+main() async {
+
+  // prepare mocked API
+  MockClient mockClient = MockClient();
+  CircApi circApi = CircApi(client: mockClient);
 
 
-  test("test that the real (ok, also mock) Circ REST endpoint is online and responds", () async {
+  test("test that the Circ demo REST endpoint is online and responds", () async {
     CircApi circApi = CircApi();
     List<Vehicle> vehicles = await circApi.getVehicles();
-    expect(vehicles.length > 0, true);
+    expect(vehicles.length > 0, isTrue);
   });
 
 
-  test("test json parsing", () async {
-    // mock response content
-    final File jsonFile = File("test_resources/vehicles_json_response.json");
-    String jsonBody = await jsonFile.readAsString(encoding: utf8);
+  test("test fetching and json parsing of all vehicles", () async {
+    await registerMockResponse(
+        client: mockClient,
+        uri: Uri.https("my-json-server.typicode.com", "FlashScooters/Challenge/vehicles", const {}),
+        jsonFile: File("test_resources/response_all_vehicles.json"),
+    );
 
-    // mock response, use utf-8, otherwise mock answer will not work (since API expects utf-8)
-    MockClient client1 = MockClient();
-    Uri uri = Uri.https("my-json-server.typicode.com", "FlashScooters/Challenge/vehicles", const {});
-    Map<String, String> headers = const {
-      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
-    };
-    when(client1.get(uri, headers: headers))
-        .thenAnswer((_) async => Response(jsonBody, 200, headers: headers));
-
-    // prepare mocked API
-    CircApi circApi = CircApi(client: client1);
     // test parsing
     List<Vehicle> vehicles = await circApi.getVehicles();
 //    print(vehicles);
@@ -69,5 +64,48 @@ main() {
   });
 
 
+  test("test fetching of one vehicle by id and json parsing", () async {
+    await registerMockResponse(
+        client: mockClient,
+        uri: Uri.https("my-json-server.typicode.com", "FlashScooters/Challenge/vehicles/100", const {}),
+        jsonFile: File("test_resources/response_vehicle_id_100.json")
+    );
+    // existing id
+    Vehicle vehicle100 = await circApi.getVehicle(100);
+    expect(vehicle100 != null && vehicle100.id == 100, isTrue);
+  });
 
+
+  test("test fetching non-existing vehicle", () async {
+    await registerMockResponse(
+        client: mockClient,
+        uri: Uri.https("my-json-server.typicode.com", "FlashScooters/Challenge/vehicles/6000", const {}),
+        jsonFile: File("test_resources/response_empty.json")
+    );
+    // non-existing id
+    expect(() async => await circApi.getVehicle(6000),
+        throwsA(predicate((e) =>
+                e is ArgumentError
+                && e.message == "Invalid vehicle id. Vehicle does not exist.")
+        ));
+  });
+
+}
+
+
+/// Register a mock response for the specified [client].
+/// It will only respond with the String content from the specified [jsonFile] if the [uri] matches exactly, including query parameters.
+/// Automatically uses utf-8 in the header, which should not be replaced, otherwise the mock client will fail to return the response.
+Future<void> registerMockResponse({
+    @required MockClient client,
+    @required Uri uri,
+    @required File jsonFile
+    }) async {
+  String jsonBody = await jsonFile.readAsString(encoding: utf8);
+  // use utf-8, otherwise mock answer will not work (since API expects utf-8)
+  Map<String, String> headers = const {
+    HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+  };
+  when(client.get(uri, headers: headers))
+      .thenAnswer((_) async => Response(jsonBody, 200, headers: headers));
 }
