@@ -11,7 +11,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="Circ Flutter Challenge"
+        android:label="Circ Flutter"
         android:icon="@mipmap/launcher_icon">
 
         <!-- Maps API key is restricted and only works on Android -->

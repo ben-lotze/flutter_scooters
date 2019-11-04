@@ -24,7 +24,7 @@ class CompassButton extends StatelessWidget {
             child: CircleButton(
               heroTag: "compass_button",
               iconData: Icons.arrow_upward,
-              onPressed: () => mapsBloc.resetNorth(),
+              onPressed: () => mapsBloc.onResetNorthPressed(),
             ),
           );
 

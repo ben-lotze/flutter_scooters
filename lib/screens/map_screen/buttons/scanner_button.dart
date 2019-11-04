@@ -22,10 +22,10 @@ class ScannerButton extends StatelessWidget {
 
   void onPressed(BuildContext context) async {
     String qrCodeString = await scan();
-    print(qrCodeString);
-//    VehicleQrCode qrCode = VehicleQrCode.fromJsonString(qrCodeString);
-//    print(qrCode);
-//    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanResultScreen(qrCode: qrCode)));
+//    print(qrCodeString);
+    VehicleQrCode qrCode = VehicleQrCode.fromJsonString(qrCodeString);
+    print(qrCode);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanResultScreen(qrCode: qrCode)));
 
 
     //    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CameraApp()));   // quick qr scanner -> build problems

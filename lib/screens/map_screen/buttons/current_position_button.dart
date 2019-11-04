@@ -16,6 +16,6 @@ class CurrentPositionButton extends StatelessWidget {
   }
 
   void _onPressed(BuildContext context) async {
-    Provider.of<MapsBloc>(context).centerToCurrentUserPosition();
+    Provider.of<MapsBloc>(context).onCenterViewPressed();
   }
 }

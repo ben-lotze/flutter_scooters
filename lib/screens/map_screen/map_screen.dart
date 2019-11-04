@@ -93,6 +93,7 @@ class _MapScreenState extends State<MapScreen> {
 
                           onTap: (LatLng tapPosition) {
                             print("map tapped, could do anything now");
+                            mapsBloc.mapTapped();
                             if (_vehiclePopupActive) {
                               Navigator.of(context).pop();
                             }

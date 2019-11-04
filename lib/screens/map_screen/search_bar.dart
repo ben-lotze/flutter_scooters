@@ -123,14 +123,12 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   void clearInput() {
-    focus.unfocus();
+//    focus.unfocus();
     hasContent = false;
 //    widget._editController.selection = TextSelection(baseOffset: 0);
     widget._editController.clear();
 
-    setState(() {
-
-    });
+    setState(() {});
   }
 
 

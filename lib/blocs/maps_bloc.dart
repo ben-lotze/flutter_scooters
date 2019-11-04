@@ -65,7 +65,7 @@ class MapsBloc {
   // definitivly add this? but can not be searched from endpoint! --> just assume there was such a functionality
 
   void _onMapCreated(GoogleMapController controller) async {
-    centerToCurrentUserPosition();
+    onCenterViewPressed();
     List<Vehicle> vehicles = await _circApi.getVehicles();
     vehicles.forEach((vehicle) {
       _vehicleById[vehicle.id] = vehicle;
@@ -73,7 +73,7 @@ class MapsBloc {
     addMapMarkersForVehicles(vehicles);
   }
 
-  Map<int, Vehicle> _vehicleById = HashMap();
+  Map<int, Vehicle> _vehicleById = HashMap(); // K=vehicleId (equal to value of markerId)
   Map<MarkerId, Marker> _markersById = HashMap();
   MarkerId _lastTappedMarkerId; // needs to be reset to default color on each new tapped marker
 
@@ -102,19 +102,7 @@ class MapsBloc {
       markerId: markerId,
       icon: BitmapDescriptor.defaultMarkerWithHue(isSelected ? _activeMarkerHue : _inactiveMarkerHue),  // TODO: replace with custom Widget
       position: LatLng(vehicle.latitude, vehicle.longitude),
-      onTap: () {
-//        print("tapped marker=$markerId for vehicle id=${vehicle.id} (lastTapped=$_lastTappedMarkerId)");
-
-        // update currently tapped marker + reset last tapped marker to defaults
-        _markersById[markerId] = _createMarker(vehicle, isSelected: true, markerId: markerId);
-        if (_lastTappedMarkerId != null && _lastTappedMarkerId != markerId) {
-          _markersById[_lastTappedMarkerId] = _createMarker(_vehicleById[int.parse(_lastTappedMarkerId.value)], isSelected: false, markerId: _lastTappedMarkerId);
-        }
-        updateMapState(markers: Set.of(_markersById.values), updateMapView: true);
-        _lastTappedMarkerId = markerId;
-
-        _vehicleInfoPopupSink.add(vehicle);
-      },
+      onTap: () => markerTapped(markerId, vehicle),
       consumeTapEvents: true,
     );
 
@@ -122,14 +110,22 @@ class MapsBloc {
   }
 
 
-  // TODO TEST STYLING (maybe traffic, bike? -> NO, just which elements are on map)
-  // TODO: test: possible with platform channel to Android/iOS map component (which gets embedded)?
-  void testChangeStyle() {
-//    _mapControllerSubject.value.setMapStyle(mapStyle);
+  void markerTapped(MarkerId markerId, Vehicle vehicle) {
+//        print("tapped marker=$markerId for vehicle id=${vehicle.id} (lastTapped=$_lastTappedMarkerId)");
+
+    // update currently tapped marker + reset last tapped marker to defaults
+    _markersById[markerId] = _createMarker(vehicle, isSelected: true, markerId: markerId);
+    if (_lastTappedMarkerId != null && _lastTappedMarkerId != markerId) {
+      _markersById[_lastTappedMarkerId] = _createMarker(_vehicleById[int.parse(_lastTappedMarkerId.value)], isSelected: false, markerId: _lastTappedMarkerId);
+    }
+    updateMapState(markers: Set.of(_markersById.values), updateMapView: true);
+    _lastTappedMarkerId = markerId;
+
+    _vehicleInfoPopupSink.add(vehicle);
   }
 
 
-  Future<void> resetNorth() async {
+  Future<void> onResetNorthPressed() async {
 //    print("resetNorth: ${_mapStateSubject.value}");
     await _mapControllerSubject.value.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         bearing: 0,
@@ -138,52 +134,12 @@ class MapsBloc {
     ));
   }
 
-  // TODO: rename to --> position button pressed ot similar --> does two things
-  Future<void> centerToCurrentUserPosition() async {
-//    GoogleMapController controller = _mapControllerSubject.value;
-//    if (controller == null) {
-//      // should be logged
-//      return;
-//    }
 
+  Future<void> onCenterViewPressed() async {
     Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     LatLng userLatLng = LatLng(position.latitude, position.longitude);
     updateMapState(mapCenter: userLatLng, updateMapView: false);  // no update: do with animation
-
     await _mapControllerSubject.value.animateCamera(CameraUpdate.newLatLng(userLatLng));
-
-
-//    _mapControllerSubject.value.moveCamera(CameraUpdate.newLatLng(userLatLng));
-
-//    print("\nuserLatLng: $userLatLng");
-//    // TODO: try with .. and all in one line
-//    LatLng currentMapLatLng = await _mapControllerSubject.value.getLatLng(ScreenCoordinate(x:206, y:342));
-//    print("currentMapLatLng: $currentMapLatLng");
-//
-////    double latitudeDiff = (userLatLng.latitude - currentMapLatLng.latitude).abs();
-////    double longitudeDiff = (userLatLng.longitude - currentMapLatLng.longitude).abs();
-////    print("latitudeDiff=$latitudeDiff, longitudeDiff=$longitudeDiff");
-////    if ( latitudeDiff <= 0.3
-////        && longitudeDiff <= 0.3
-////      ) {
-////      print("reset: only zoom");
-////      _mapControllerSubject.value.animateCamera(CameraUpdate.newLatLngZoom(userLatLng, _DEFAULT_ZOOM_LEVEL));
-//////      _mapControllerSubject.value.animateCamera(CameraUpdate.zoomTo(_DEFAULT_ZOOM_LEVEL));
-////    }
-//
-//    double distance = calculateDistance(userLatLng.latitude, userLatLng.longitude, currentMapLatLng.latitude, currentMapLatLng.longitude);
-//    print("distace: $distance");
-//    if (distance < 2) {
-//      _mapControllerSubject.value.animateCamera(CameraUpdate.newLatLngZoom(userLatLng, _DEFAULT_ZOOM_LEVEL));
-//    }
-//    else {
-//      print("only center map to $userLatLng");
-//      _mapControllerSubject.value.animateCamera(CameraUpdate.newLatLng(userLatLng));
-//
-//    }
-
-//    _mapStateSubject.sink.add(mapState);
-//    _mapControllerSubject.value.animateCamera(CameraUpdate.zoomTo(14));
   }
 
 
@@ -203,18 +159,6 @@ class MapsBloc {
   }
 
 
-  // TODO remove, use API
-  double calculateDistance(lat1, lon1, lat2, lon2){
-    var p = 0.017453292519943295;
-    var c = math.cos;
-    var a = 0.5 - c((lat2 - lat1) * p)/2 +
-        c(lat1 * p) * c(lat2 * p) *
-            (1 - c((lon2 - lon1) * p))/2;
-    return 12742 * math.asin(math.sqrt(a));
-  }
-
-
-
   void zoomIn() {
 //    updateMapState() TODO: zoom state --> should be updated from map via change of camera position (callback), same for zoomOut
     _mapControllerSubject.value.animateCamera(CameraUpdate.zoomIn());
@@ -224,6 +168,19 @@ class MapsBloc {
     _mapControllerSubject.value.animateCamera(CameraUpdate.zoomOut());
   }
 
+
+  /// callback if the map was clicked without another necessary action
+  /// (This will not be called if the user taps on a marker).
+  void mapTapped() {
+    // TODO: close popup
+    // reset last tapped marker
+
+    if (_lastTappedMarkerId != null) {
+      print("reset last tapped marker");
+      _markersById[_lastTappedMarkerId] = _createMarker(_vehicleById[int.parse(_lastTappedMarkerId.value)], isSelected: false, markerId: _lastTappedMarkerId);
+      updateMapState(markers: Set.of(_markersById.values), updateMapView: true);
+    }
+  }
 
 
   /// [updateMapView] Defaults to true. If true, the map view will be updated with the new values.

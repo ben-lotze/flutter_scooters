@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 class CustomSlider extends StatefulWidget {
 
   // TODO: set all attributes to final (once class is finished)
-  // TODO: fix visual glitch when home=right and draggable is dragged fully to teh left side (small gap is visible)
-
   // TODO: width and height of both draggables as additional params --> calculations are based of them -> alternative: measure/read once
+  // TODO: offer customizable sizes
   final Widget draggable = DraggableCircle(48, Colors.deepOrange, Icon(Icons.lock_outline, color: Colors.black54));
   final Widget draggableWhenDroppedOnDestination = DraggableCircle(48, Colors.green, Icon(Icons.lock_open, color: Colors.black54));
   // TODO: maybe add draggableWhenHoveringOverDestination
 
+
 //  Color backgroundColor;
-  // TODO: background container should be a Widget! (with any child and Text and whatever) -> fallback to my default
+  // TODO: background container should be a Widget! (with any child and Text and whatever) -> fallback to default
   Widget backgroundChild = Container(
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -29,8 +29,11 @@ class CustomSlider extends StatefulWidget {
   /// specify a trail that will be following the draggable
   Color trailColor; // or trailWidget(s)? possibly multiple, depending on percentage + customizable morphing effect/animation
 
+
   // from 0-100
   // int snapPercentage;  TODO: add snapPercentage parameter (int [0,100] or double [0, 1])
+
+  // StartingSide -> left or ride --> can/will be switched once the destination is reached
 
   double borderWidth;
   Color borderColor;
@@ -69,49 +72,30 @@ class CustomSliderState extends State<CustomSlider> {
 
 
   /// key to access draggable render object (key is put into draggable widget).
+  final GlobalKey _draggableKey = GlobalKey();
+
   /// Necessary to calculate current position on screen.
   double _startingXOffset;
+
+  double _measuredContainerWidth;
 
   double _dragDestinationPercentage = 0;
   bool _isHoveringOverDestination = false;
 //  bool _isDroppedOnDestination = false;
 
   DraggableHome _draggableHomeSide = DraggableHome.LEFT;
-  final GlobalKey _draggableKey = GlobalKey();
+
 
 //  Widget _draggable;
 //  Widget _draggableDroppedOnDestination;
 //  Widget _draggableAio;
 
 
-  // StartingSide -> left or ride --> can/will be switched once the destination is reached
-
-
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-
-
-
-  // TODO: check that this ALWAYS happens!
-//  @override
-//  void didUpdateWidget(CustomSlider oldWidget) {
-//    print("didUpdateWidget, ");
-//    super.didUpdateWidget(oldWidget);
-//  }
-
-
-
   @override
   Widget build(BuildContext context) {
-
 //    print("\nBUILD: value=${_dragPositionPercentageListener.value}, home=$_draggableHomeSide"
 ////        ", isDropped=$_isDroppedOnDestination"
 //    );
-
 
     return Container(
       decoration: BoxDecoration(
@@ -130,7 +114,6 @@ class CustomSliderState extends State<CustomSlider> {
 
           // background depends on draggable home position
           _draggableHomeSide == DraggableHome.LEFT ? widget.backgroundChild : widget.backgroundChildWhenDropped,
-
 
           // trail while dragging
           Builder(
@@ -152,7 +135,10 @@ class CustomSliderState extends State<CustomSlider> {
                       height: 48,
 //                      height: _currentDxListener.value <= 48 ? _currentDxListener.value : 48,
 //                    width: MediaQuery.of(context).size.width * _dragPositionPercentageListener.value,
-                      width: _draggableHomeSide == DraggableHome.LEFT ? _currentDxListener.value + 24 : 311.42857142857144 - _currentDxListener.value,
+
+                        // TODO: use correct width!
+//                      width: _draggableHomeSide == DraggableHome.LEFT ? _currentDxListener.value + 24 : 311.42857142857144 - _currentDxListener.value,
+                      width: _draggableHomeSide == DraggableHome.LEFT ? _currentDxListener.value + 24 : _measuredContainerWidth - _currentDxListener.value,
                       margin: EdgeInsets.only(left: _draggableHomeSide == DraggableHome.LEFT ? 0 : _currentDxListener.value + 24)
                     ),
                   );
@@ -186,6 +172,8 @@ class CustomSliderState extends State<CustomSlider> {
 
                   onHorizontalDragUpdate: (DragUpdateDetails details) {
 
+                    _measuredContainerWidth = context.size.width;
+
                     RenderBox draggableRenderBox = _draggableKey.currentContext.findRenderObject();
                     if (_startingXOffset == null) {
                       _startingXOffset = draggableRenderBox.localToGlobal(Offset.zero).dx;
@@ -199,7 +187,7 @@ class CustomSliderState extends State<CustomSlider> {
                     // only calculate this once
                     if (_dragDestinationPercentage == 0) {
                       print("calculating finishLinePercentage once");
-                      _dragDestinationPercentage = (context.size.width - 48) / context.size.width;    // DO NOT FORGET THE BORDER!!!
+                      _dragDestinationPercentage = (context.size.width - 48) / context.size.width;
                     }
                     print("dragDestinationPercentage: $_dragDestinationPercentage");
 //
@@ -292,8 +280,9 @@ class CustomSliderState extends State<CustomSlider> {
     // TODO: animation instead of immediate reset
 
     this.setState(() {
-      _currentDxListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : 311.42857142857144;   // TODO: use width + align tail on right side!
-      _dragPositionPercentageListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : _dragDestinationPercentage + (48 / 311.42857142857144);
+//      _currentDxListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : 311.42857142857144;   // TODO: use width + align tail on right side!
+      _currentDxListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : _measuredContainerWidth;   // TODO: use width + align tail on right side!
+      _dragPositionPercentageListener.value = (_draggableHomeSide == DraggableHome.LEFT) ? 0.0 : _dragDestinationPercentage + (48 / _measuredContainerWidth);
     });
     widget.onDragAborted(); // user callback
     print("onDragAborted end: Home=$_draggableHomeSide");
@@ -315,7 +304,7 @@ class CustomSliderState extends State<CustomSlider> {
   void onDroppedAtDestination() {
     print("onDraggableDroppedAtDestination start: Home=$_draggableHomeSide");
     this.setState(() {
-      _dragPositionPercentageListener.value = _draggableHomeSide == DraggableHome.LEFT ? _dragDestinationPercentage + (48 / 311.42857142857144) : 0.0;
+      _dragPositionPercentageListener.value = _draggableHomeSide == DraggableHome.LEFT ? _dragDestinationPercentage + (48 / _measuredContainerWidth) : 0.0;
 //      _isDroppedOnDestination = false;
       _draggableHomeSide = _draggableHomeSide == DraggableHome.LEFT ? DraggableHome.RIGHT : DraggableHome.LEFT;
     });

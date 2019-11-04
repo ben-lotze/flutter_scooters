@@ -1,4 +1,4 @@
-import 'package:circ_flutter_challenge/blocs/price_calculator_bloc.dart';
+import 'package:circ_flutter_challenge/blocs/formatters.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
 import 'package:circ_flutter_challenge/generic_widgets/drag_slider.dart';
 import 'package:circ_flutter_challenge/screens/user_manual/user_manual.dart';
@@ -86,40 +86,34 @@ class VehicleInfoPopup extends StatelessWidget {
             // TODO: this can be much cleaner -> PriceCalculator/PriceFormatter, no blocs?, no new context?
             // TODO: UI should NOT calculate on its own!!!
             // price info
-            Provider(
-              builder: (context) => PriceCalculatorBloc(),
-              child: Builder(
-                builder: (context) {
-                  PriceCalculatorBloc calculator = PriceCalculatorBloc();
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
 
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-
-                      Text("Base price: ${calculator.formatPriceInEuro(calculator.basePriceInCents, vehicle.currency)} "
-                          "+ ${calculator.formatPriceInEuro(vehicle.price, vehicle.currency)} "
+                Text("Base price: ${PriceFormatter.formatPrice(PriceFormatter.BASE_PRICE_CENTS, vehicle.currency)} "
+                    "+ ${PriceFormatter.formatPrice(vehicle.price, vehicle.currency)} "
 //                          "/ ${vehicle.priceTime}"
-                          "/ ${calculator.formatTime(vehicle.priceTime)}"
-                        ,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+                    "/ ${TimeFormatter.formatTime(vehicle.priceTime)}"
+                  ,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
 
-                      SizedBox(height: 4,),
-                      // TODO: better idea: just one slider with a price + if route calculated: ca. price (different visualization on same slider, with markers?)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
+                SizedBox(height: 4),
+                // TODO: better idea: just one slider with a price + if route calculated: ca. price (different visualization on same slider, with markers?)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
 //                          CircleAvatar(child: Text("5m", style: TextStyle(fontSize: 12),)),
-                          Text("5': ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}"),
-                          SizedBox(width: 16),
+                    Text("5': ${PriceFormatter.formatPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}"),
+                    SizedBox(width: 16),
 //                          CircleAvatar(child: Text("10m", style: TextStyle(fontSize: 12))),
-                          Text("10': ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}"),
-                          SizedBox(width: 16),
+                    Text("10': ${PriceFormatter.formatPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}"),
+                    SizedBox(width: 16),
 //                          CircleAvatar(child: Text("15m", style: TextStyle(fontSize: 12))),
-                          Text("15': ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 15))}"),
-                        ],
-                      ),
+                    Text("15': ${PriceFormatter.formatPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 15))}"),
+                  ],
+                ),
 
 //                    Text("5 minutes: ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}\n"
 //                    "10 minutes: ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}\n"
@@ -128,11 +122,8 @@ class VehicleInfoPopup extends StatelessWidget {
 //                        Text(""),
 //                        Text(""),
 
-                      //TODO: calculator/dragHandler for X minutes
-                    ],
-                  );
-                },
-              ),
+                //TODO: calculator/dragHandler for X minutes
+              ],
             ),
 
 
