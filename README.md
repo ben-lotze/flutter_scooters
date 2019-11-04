@@ -50,7 +50,7 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 
 
 #### User manual
-<img src="readme_resources/tutorial_1.png" width="360"/>   <img src="readme_resources/tutorial_2.png" width="360"/>   <img src="readme_resources/tutorial_3.png" width="360"/>   <img src="readme_resources/tutorial_4.png" width="360"/>
+<img src="readme_resources/tutorial_1.png" width="200"/>   <img src="readme_resources/tutorial_2.png" width="200"/>   <img src="readme_resources/tutorial_3.png" width="200"/>   <img src="readme_resources/tutorial_4.png" width="200"/>
 
 
 #### Some more screenshots
