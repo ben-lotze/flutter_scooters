@@ -23,6 +23,7 @@ class CompassButton extends StatelessWidget {
             angle: cameraBearing,
             child: CircleButton(
               heroTag: "compass_button",
+              tooltip: "Reset map rotation",
               iconData: Icons.arrow_upward,
               onPressed: () => mapsBloc.onResetNorthPressed(),
             ),

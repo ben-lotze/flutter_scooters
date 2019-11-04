@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
 
-// TODO: make unfocus work (clicking anywhere else)
-// TODO: autocomplete with maps data
-
 class SearchBar extends StatefulWidget {
 
   final TextEditingController _editController;
@@ -16,17 +13,15 @@ class SearchBar extends StatefulWidget {
 
 }
 
+
+
 class _SearchBarState extends State<SearchBar> {
 
   bool hasContent;
 
-  FocusNode focus;
-
   @override
   void initState() {
     super.initState();
-    focus = FocusNode();
-
     hasContent = false;
   }
 
@@ -45,9 +40,8 @@ class _SearchBarState extends State<SearchBar> {
         bottomOpacity: 0,
         leading: null, // suppress back button
         automaticallyImplyLeading: false, // suppress back button
-//        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(8))),
         title: Container(
-          height: 48,
+          height: 56,
           width: MediaQuery.of(context).size.width,
           margin: EdgeInsets.all(8),  // necessary for shadow/elevation of contained Card
           padding: EdgeInsets.all(0),
@@ -58,12 +52,19 @@ class _SearchBarState extends State<SearchBar> {
             child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  IconButton(icon: Icon(Icons.menu),),
 
+                  // main menu
+                  IconButton(
+                    icon: Icon(Icons.menu, color: Colors.black54,),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
+
+
+                  // text input
                   Expanded(
                     child: TextFormField(
-                      focusNode: focus,
                       controller: widget._editController,
                       textAlign: TextAlign.start,
                       minLines: 1,
@@ -72,9 +73,8 @@ class _SearchBarState extends State<SearchBar> {
                       onTap: onTap,
                       decoration: InputDecoration(
                         hintText: "Enter destination",
-                        contentPadding: EdgeInsets.all(8),
+                        contentPadding: EdgeInsets.symmetric(vertical: 12),
                         border: InputBorder.none,
-
                         suffixIcon: hasContent ? IconButton(
                           tooltip: "Clear text input",
                           icon: Icon(Icons.close),
@@ -82,13 +82,6 @@ class _SearchBarState extends State<SearchBar> {
                         ) : Container(width: 0, height: 0, color: Colors.transparent,),
 
                       ),
-
-
-                        validator: (str) {
-                          return str;
-                        },
-
-
                       onFieldSubmitted: (content) {
                         // real behavior not implemented yet
                         Scaffold.of(context).showSnackBar(SnackBar(
@@ -99,7 +92,16 @@ class _SearchBarState extends State<SearchBar> {
                     ),
                   ),
 
-                  IconButton(icon: Icon(Icons.mic),),
+
+                  // mic button
+                  IconButton(
+                    icon: Icon(Icons.mic,color: Colors.black54),
+                    onPressed: () {
+                      Scaffold.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Speak to the machine (not implemented)"),));
+                    },
+                  ),
+
                 ],
               ),
           ),
@@ -123,16 +125,10 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   void clearInput() {
-//    focus.unfocus();
     hasContent = false;
 //    widget._editController.selection = TextSelection(baseOffset: 0);
     widget._editController.clear();
-
     setState(() {});
   }
-
-
-
-
 
 }

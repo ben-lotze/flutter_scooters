@@ -1,6 +1,6 @@
+import 'package:circ_flutter_challenge/base/rest_tools.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
 import 'package:http/http.dart';
-import 'package:rest_tools/rest_tools_http.dart';
 
 
 class CircApi {
@@ -16,10 +16,12 @@ class CircApi {
     }) : _client = client != null ? client : Client();
 
 
+
   Future<List<Vehicle>> getVehicles() async {
     List<dynamic> jsonVehicles = await RestToolsHttp(client: _client).getJsonList(_authority, "$_basePath/vehicles");
     return jsonVehicles.map((json) => Vehicle.fromJson(json)).toList();
   }
+
 
   /// returns one vehicle with the specified [id]
   Future<Vehicle> getVehicle(int id) async {
@@ -30,7 +32,6 @@ class CircApi {
     on Exception {
       throw ArgumentError("Invalid vehicle id. Vehicle does not exist.");
     }
-
   }
 
 }

@@ -11,7 +11,8 @@ Challenge app to be hired at Circ.
 
 ## Technical details
 * UI and business logic are decoupled by using the BLoC pattern.
-* Targeting Android API level >= 16
+* Developed and tested with Flutter dev channel (1.10.14)
+* Targeting Android API level >= 16A
 
 
 
@@ -26,7 +27,7 @@ Challenge app to be hired at Circ.
 
 Scanning a QR code opens the info popup to unlock the vehicle:
 
-<img src="readme_resources/scanner_button.gif" width="360"/>   <img src="readme_resources/scanner_opens_info_popup.gif" width="360"/> 
+<img src="readme_resources/scanner_button.gif" width="360" />   <img src="readme_resources/scanner_opens_info_popup.gif" width="360"/> 
 
 
 Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
@@ -41,6 +42,7 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 * Then I tried two libraries and was not satisfied with them. So I made my own.
 * I will publish this custom drag-to-confirm widget soon as package (after some adjustments and cleanups). 
 
+<img src="readme_resources/swipe_to_confirm.gif" width="360"/>
 
 
 #### Map types
@@ -54,11 +56,3 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 #### Some more screenshots
 <img src="readme_resources/selecting_markers_360.gif" width="360"/>
 
-
-
-
-
-## Getting Started
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)

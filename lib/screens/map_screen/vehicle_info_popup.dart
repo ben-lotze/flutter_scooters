@@ -1,4 +1,4 @@
-import 'package:circ_flutter_challenge/blocs/formatters.dart';
+import 'package:circ_flutter_challenge/base/formatters.dart';
 import 'package:circ_flutter_challenge/data/verhicle.dart';
 import 'package:circ_flutter_challenge/generic_widgets/drag_slider.dart';
 import 'package:circ_flutter_challenge/screens/user_manual/user_manual.dart';

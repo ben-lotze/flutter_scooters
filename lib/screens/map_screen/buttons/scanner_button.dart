@@ -1,7 +1,6 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:circ_flutter_challenge/blocs/maps_bloc.dart';
 import 'package:circ_flutter_challenge/data/qr_code.dart';
-import 'package:circ_flutter_challenge/screens/scan_result/scan_result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +13,8 @@ class ScannerButton extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 0),
       child: FloatingActionButton.extended(
         elevation: 16,
-        heroTag: "maps_scanner_button",
+        heroTag: "scanner_button",
+        tooltip: "Opens the scanner to scan a vehicle's QR code",
         icon: Image.asset("assets/icons/qrcode-scan.png", width: 24, height: 24, color: Colors.black54,),
         label: Text("Scan", style: TextStyle(fontSize: 16, color: Colors.black54),),
         onPressed: () => onPressed(context),

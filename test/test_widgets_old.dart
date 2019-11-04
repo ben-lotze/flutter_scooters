@@ -13,28 +13,20 @@ main() {
       // check that scanner button exists
       expect(
           find.byWidgetPredicate((Widget widget) {
-            return widget is FloatingActionButton && widget.heroTag == 'maps_scanner_button';
+            return widget is FloatingActionButton && widget.heroTag == 'scanner_button';
           }),
           findsOneWidget
       );
 
 
-
-
-
-
+      // TODO: this will not work!
       // tap scanner button
       await tester.tap(find.byWidgetPredicate(
-            (Widget widget) => widget is FloatingActionButton && widget.heroTag == 'maps_scanner_button',
+            (Widget widget) => widget is FloatingActionButton && widget.heroTag == 'canner_button',
 //        description: 'widget with tooltip "Back"',
       ));
 //    expect(find.text('SCAN'), findsOneWidget);
 //    expect(find.text('1'), findsNothing);
-
-
-
-
-
 
       return;
     });

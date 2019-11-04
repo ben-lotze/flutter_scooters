@@ -1,4 +1,4 @@
-import 'package:circ_flutter_challenge/blocs/formatters.dart';
+import 'package:circ_flutter_challenge/base/formatters.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

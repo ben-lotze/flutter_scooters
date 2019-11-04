@@ -65,6 +65,8 @@ class MapTypePopup extends StatelessWidget {
 
             SizedBox(height: 24,),
 
+
+
             Text("MAP DETAILS", style: TextStyle(letterSpacing: 1.4, fontWeight: FontWeight.bold,), textAlign: TextAlign.start,),
 
             Row(
@@ -74,13 +76,24 @@ class MapTypePopup extends StatelessWidget {
               children: <Widget>[
 
                 MapDetailsImageButton(
+                  text: "Public transport",
+                  tooltip: "Would show public transportation layer (not implemented)",
+                  imgAsset: "assets/img_icons/map_details_public_transport.jpg",
+                  mapDetails: MapDetails.PUBLIC_TRANSPORT,
+                  context: parentContext,
+                ),
+                MapDetailsImageButton(
                   text: "Traffic",
-                  tooltip: MapDetailsImageButton.TOOLTIP_TRAFFIC,
-                  imgAsset: "assets/img_icons/map_type_normal.png",
+                  tooltip: "Would show traffic layer (not implemented)",
+                  imgAsset: "assets/img_icons/map_details_traffic.jpg",
                   mapDetails: MapDetails.TRAFFIC,
-                  onTap: () => () {
-                    // no additional actions atm
-                    },
+                  context: parentContext,
+                ),
+                MapDetailsImageButton(
+                  text: "Bike lanes",
+                  tooltip: "Would show layer for bike lanes (not implemented)",
+                  imgAsset: "assets/img_icons/map_details_bike.jpg",
+                  mapDetails: MapDetails.BIKE_LANES,
                   context: parentContext,
                 ),
 

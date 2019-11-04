@@ -12,7 +12,9 @@ class MapDetailsImageButton extends StatelessWidget {
   final MapDetails mapDetails;
   final BuildContext context;
 
+  static const TOOLTIP_PUBLIC_TRANSPORT = "Switch public transport on or off";
   static const TOOLTIP_TRAFFIC = "Switch traffic on or off";
+  static const TOOLTIP_BIKE_LANES = "Switch bike lanes on or off";
 
   /// A button with two rows: an image on top and text underneath.
   /// <br>[imgAsset] asset image to be shown
@@ -43,6 +45,8 @@ class MapDetailsImageButton extends StatelessWidget {
               tooltip: tooltip,
               drawBorder: mapDetailsAreActivated,
               onTap: () {
+                Scaffold.of(this.context).removeCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
+                Scaffold.of(this.context).showSnackBar(SnackBar(content: Text(tooltip),));
                 // activate/deactivate map details
                 if (mapDetailsAreActivated) {
                   print("removing $mapDetails");
