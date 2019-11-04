@@ -1,9 +1,12 @@
 MUST TODO
-- API Keys + Restrictions
-- alle Importe checken
-- cleanup
-	- gradle
+
 - alles in neues repo: circ_flutter (wegen Keys)
+
+
+
+
+FUCK IT
+- API Keys: Restrictions REICHEN (einfach im Projekt lassen) -> halwegs
 - REST test der Exception wirft (alle HTTP cases testen)
 
 
@@ -22,8 +25,8 @@ ERLEDIGT
 cleanup
 - google services json
 - alle print weg
-
-
+- alle Importe checken
+- gradle	
 
 ----------------
 
@@ -392,3 +395,53 @@ alternative design ideas:
 
 - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+
+
+
+
+Projekt Gradle
+// TODO: check if resolution is indeed necessary (shorter way?)
+//subprojects {
+//    project.configurations.all {
+//        resolutionStrategy.eachDependency { details ->
+//            if (details.requested.group == 'androidx.interpolator') {
+//                details.useVersion "1.0.0"
+//            }
+//            if (details.requested.group == 'androidx.core') {
+//                details.useVersion "1.0.1"
+//            }
+//            if (details.requested.group == 'androidx.lifecycle') {
+//                details.useVersion "2.0.0"
+//            }
+//            if (details.requested.group == 'androidx.versionedparcelable') {
+//                details.useVersion "1.0.0"
+//            }
+//            if (details.requested.group == 'androidx.fragment') {
+//                details.useVersion "1.0.0"
+//            }
+//            if (details.requested.group == 'androidx.appcompat') {
+//                details.useVersion "1.0.1"
+//            }
+//
+//            // new
+//            if (details.requested.group == 'com.google.firebase') {
+//                details.useVersion "17.0.3"
+//            }
+//
+//            if (details.requested.group == 'com.google.android.gms') {
+//                details.useVersion "17.0.3" // was 17.0.0
+//            }
+//
+//        }
+//    }
+//}
+
+//    project.configurations.all {
+//        resolutionStrategy.eachDependency { details ->
+//
+//            if (details.requested.group == 'com.google.firebase') {
+//                details.useVersion "[16.2.0,16.9.0]"
+//            }
+//        }
+//    }

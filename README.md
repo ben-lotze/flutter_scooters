@@ -53,13 +53,14 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 
 
 
-## Open problems:
+## TODO:
 * Animations for overlay buttons when vehicle info popup opens (are currently hidden)
 * A click on a marker does not center the map (this was intentional, since this could be confusing). But the map should be centered if the marker would be hidden by the info popup.
 * Unfocus search bar when map is tapped
 * More integration and unit tests (especially for MapsBloc)
 * Startup delay: app should start much faster.
-* Integration test: Permissions need to be granted on each test startup by hand (seems to be a Flutter Driver limitation)
+* Integration test: Permissions need to be granted on each test startup by hand (seems to be a Flutter Driver limitation). Solutions?
+* Only iOS: app does not show current user position, tap on current-position-button necessary.
 
 
 ## Possible roadmap:
