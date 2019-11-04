@@ -3,26 +3,12 @@ import 'package:circ_flutter_challenge/data/verhicle.dart';
 import 'package:circ_flutter_challenge/generic_widgets/drag_slider.dart';
 import 'package:circ_flutter_challenge/screens/user_manual/user_manual.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 
 
-
-/*
-  TODO info card
-
-  How to use -> take images from apk
-
-  drag to unlock (full width) --> better name: drag to reserve
-  (will be reserved for 15 minutes, after that it's again available for anybody else)
-
-   */
 class VehicleInfoPopup extends StatelessWidget {
 
   final Vehicle vehicle;
-
-  static const double _DRAGGABLE_CIRCLE_SIZE = 48;
-  static const double _DRAGGABLE_BAR_BORDER_WIDTH = 2;
 
   VehicleInfoPopup(this.vehicle);
 
@@ -69,22 +55,10 @@ class VehicleInfoPopup extends StatelessWidget {
 
             SizedBox(height: 16,),
 
-            CustomSlider(),
+            DragToConfirmSlider(),
 
             SizedBox(height: 16,),
 
-            // unlock slider
-            // TODO: goes into separate class -> adjustable! re-usable
-            // TODO: should have lock/unlock icon on destination (destination side changes from left to right)
-            // increase size on destination (feedback)
-            // - constrain side movements -> how? no further than start/end
-            // - when dragging: left of Draggable --> different background color (stronger effect of dragging something "sticky")
-            // - move into distinct Widget class, make sizes static const class members
-            // - when reaching right destination: switch icon to unlocked lock
-
-
-            // TODO: this can be much cleaner -> PriceCalculator/PriceFormatter, no blocs?, no new context?
-            // TODO: UI should NOT calculate on its own!!!
             // price info
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -93,41 +67,25 @@ class VehicleInfoPopup extends StatelessWidget {
 
                 Text("Base price: ${PriceFormatter.formatPrice(PriceFormatter.BASE_PRICE_CENTS, vehicle.currency)} "
                     "+ ${PriceFormatter.formatPrice(vehicle.price, vehicle.currency)} "
-//                          "/ ${vehicle.priceTime}"
-                    "/ ${TimeFormatter.formatTime(vehicle.priceTime)}"
-                  ,
+                    "/ ${TimeFormatter.formatTime(vehicle.priceTime)}",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-
                 SizedBox(height: 4),
-                // TODO: better idea: just one slider with a price + if route calculated: ca. price (different visualization on same slider, with markers?)
+
+                // some example prices
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-//                          CircleAvatar(child: Text("5m", style: TextStyle(fontSize: 12),)),
                     Text("5': ${PriceFormatter.formatPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}"),
                     SizedBox(width: 16),
-//                          CircleAvatar(child: Text("10m", style: TextStyle(fontSize: 12))),
                     Text("10': ${PriceFormatter.formatPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}"),
                     SizedBox(width: 16),
-//                          CircleAvatar(child: Text("15m", style: TextStyle(fontSize: 12))),
                     Text("15': ${PriceFormatter.formatPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 15))}"),
                   ],
                 ),
 
-//                    Text("5 minutes: ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 5))}\n"
-//                    "10 minutes: ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 10))}\n"
-//                    "15 minutes: ${calculator.calculateFormattedPriceForDuration(vehicle.price, vehicle.currency, Duration(minutes: 15))}",
-//                      style: TextStyle(fontStyle: FontStyle.italic),),
-//                        Text(""),
-//                        Text(""),
-
-                //TODO: calculator/dragHandler for X minutes
               ],
             ),
-
-
-
 
           ],
         ),

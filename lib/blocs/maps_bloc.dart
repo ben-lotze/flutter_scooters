@@ -121,7 +121,27 @@ class MapsBloc {
     updateMapState(markers: Set.of(_markersById.values), updateMapView: true);
     _lastTappedMarkerId = markerId;
 
-    _vehicleInfoPopupSink.add(vehicle);
+    showVehiclePopup(vehicle: vehicle);
+  }
+
+  /// Please specify either [vehicle] or [vehicleId], not both.
+  void showVehiclePopup({Vehicle vehicle, int vehicleId}) {
+    if (vehicle != null && vehicleId != null) {
+      throw ArgumentError("Please specify either vehicle or vehicleId, not both.");
+    }
+    if (vehicle != null) {
+      _vehicleInfoPopupSink.add(vehicle);
+      return;
+    }
+    if (vehicleId != null && vehicleId >= 0) {
+      Vehicle vehicle = _vehicleById[vehicleId];
+      if (vehicle != null) {
+        _vehicleInfoPopupSink.add(vehicle);
+        return;
+      }
+    }
+
+    throw ArgumentError("Something is wrong with your arharguments: vehicleId=$vehicleId vs $vehicle");
   }
 
 

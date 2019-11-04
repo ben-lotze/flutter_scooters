@@ -1,8 +1,10 @@
 import 'package:barcode_scan/barcode_scan.dart';
+import 'package:circ_flutter_challenge/blocs/maps_bloc.dart';
 import 'package:circ_flutter_challenge/data/qr_code.dart';
 import 'package:circ_flutter_challenge/screens/scan_result/scan_result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 class ScannerButton extends StatelessWidget {
 
@@ -22,13 +24,9 @@ class ScannerButton extends StatelessWidget {
 
   void onPressed(BuildContext context) async {
     String qrCodeString = await scan();
-//    print(qrCodeString);
     VehicleQrCode qrCode = VehicleQrCode.fromJsonString(qrCodeString);
-    print(qrCode);
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanResultScreen(qrCode: qrCode)));
-
-
-    //    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CameraApp()));   // quick qr scanner -> build problems
+//    Navigator.of(context).push(MaterialPageRoute(builder: (context) => ScanResultScreen(qrCode: qrCode)));
+    Provider.of<MapsBloc>(context).showVehiclePopup(vehicleId: qrCode.id);
   }
 
 

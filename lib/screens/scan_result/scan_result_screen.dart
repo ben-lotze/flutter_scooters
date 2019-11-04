@@ -28,7 +28,7 @@ class ScanResultScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 16,),
-            CustomSlider(),
+            DragToConfirmSlider(),
 
             // TODO: need to get vehicle from bloc, to show more info and price
           ],

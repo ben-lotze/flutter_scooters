@@ -29,6 +29,9 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 <i>Camera is not working in iOS simulator as the simulator has no camera support.</i>
 
 #### Custom swipe to confirm button
+* At first I made on myself based on Draggable and DragDestination. This did not bring the desired result since the horizontal movement can not be constrained. The Draggable could be dragged outside of the slide borders.
+* Then I tried two libraries and was not satisfied with them.
+* I will publish this custom drag-to-confirm widget soon as package (after some adjustments and cleanups). 
 
 
 
