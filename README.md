@@ -6,7 +6,7 @@
 * Targeting Android API level >= 16
 
 ## Additional integration tests
-* Due to limitations in Flutter framework the permissions need to be granted on test startup.
+* Due to limitations in the Flutter framework the permissions need to be granted on test startup.
 * Integration tests can be started with **`flutter drive --target=test_driver/app.dart`** from the project directory. 
 
 ## Additionally implemented features
@@ -31,7 +31,7 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 
 
 #### Custom swipe to confirm button
-* At first I made on myself based on Draggable and DragDestination. This did not bring the desired result since the horizontal movement could not be constrained and teh draggable could be dragged outside of the slider borders.
+* At first I made one myself based on Draggable and DragDestination. This did not bring the desired result since the horizontal movement could not be constrained and the draggable could be dragged outside of the slider borders.
 * Then I tried two libraries and was not satisfied with them. So I made my own.
 * This one has two home positions (left and right) with different backgrounds, texts and colors.
 * I will publish this custom drag-to-confirm widget soon as package (after some adjustments and cleanups). 
@@ -42,6 +42,7 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 #### Map types / details
 <img src="readme_resources/maps_details_1.png" width="360"/>   <img src="readme_resources/maps_details_2.png" width="360"/>
 
+<i>By the way: The satellite map type shows the Circ building in Berlin</i> ;-)
 
 #### User manual
 <img src="readme_resources/tutorial_1.png" width="200"/>   <img src="readme_resources/tutorial_2.png" width="200"/>   <img src="readme_resources/tutorial_3.png" width="200"/>   <img src="readme_resources/tutorial_4.png" width="200"/>
@@ -61,6 +62,7 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 * Startup delay: app should start much faster.
 * Integration test: Permissions need to be granted on each test startup by hand (seems to be a Flutter Driver limitation). Solutions?
 * Only iOS: app does not show current user position, tap on current-position-button necessary.
+* Swipe-to-confirm button: the draggable should be always directly under the finger (currently the distance grows the more the destination is reached).
 
 
 ## Possible roadmap:
