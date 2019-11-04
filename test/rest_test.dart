@@ -106,9 +106,21 @@ main() async {
     );
     // non-existing id
     expect(() async => await circApi.getVehicle(6000), throwsA(predicate((e) {
-      return e is ArgumentError
-          && e.message == "Invalid vehicle id. Vehicle does not exist.";
+//      return e is ArgumentError && e.message == "Invalid vehicle id. Vehicle does not exist.";
+      return e is Exception;
     })));
+  });
+
+
+
+  test("testing http error code", () {
+    Uri uri123 = Uri.https("my-json-server.typicode.com", "FlashScooters/Challenge/vehicles/123", const {});
+    Map<String, String> headers = const {
+      HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8'
+    };
+    when(mockClient.get(uri123, headers: headers))
+        .thenAnswer((_) async => Response("", 404, headers: headers));
+    expect(() async => await circApi.getVehicle(123), throwsException);
   });
 
 }

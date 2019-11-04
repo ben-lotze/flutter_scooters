@@ -49,6 +49,9 @@ class RestToolsHttp {
       case 403:
         msg = "Forbidden: You are not authorized or https resource was opened via http.";
         break;
+      case 404:
+        msg = "Not found.";
+        break;
       case 405:
         msg = "Method not allowed.";
         break;

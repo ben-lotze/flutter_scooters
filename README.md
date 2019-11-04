@@ -33,6 +33,7 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 #### Custom swipe to confirm button
 * At first I made on myself based on Draggable and DragDestination. This did not bring the desired result since the horizontal movement could not be constrained and teh draggable could be dragged outside of the slider borders.
 * Then I tried two libraries and was not satisfied with them. So I made my own.
+* This one has two home positions (left and right) with different backgrounds, texts and colors.
 * I will publish this custom drag-to-confirm widget soon as package (after some adjustments and cleanups). 
 
 <img src="readme_resources/swipe_to_confirm.gif" width="360"/>

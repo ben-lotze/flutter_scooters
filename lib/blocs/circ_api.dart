@@ -25,13 +25,13 @@ class CircApi {
 
   /// returns one vehicle with the specified [id]
   Future<Vehicle> getVehicle(int id) async {
-    try {
+//    try {
       Map<String, dynamic> jsonMap = await RestToolsHttp(client: _client).getJsonMap(_authority, "$_basePath/vehicles/$id");
       return Vehicle.fromJson(jsonMap);
-    }
-    on Exception {
-      throw ArgumentError("Invalid vehicle id. Vehicle does not exist.");
-    }
+//    }
+//    on Exception {
+//      throw ArgumentError("Invalid vehicle id. Vehicle does not exist.");
+//    }
   }
 
 }

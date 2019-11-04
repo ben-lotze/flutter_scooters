@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 main() {
 
-  group("old tests", () {
+  group("widget tests", () {
 
     testWidgets('Map screen test', (WidgetTester tester) async {
       await tester.pumpWidget(MyApp());
