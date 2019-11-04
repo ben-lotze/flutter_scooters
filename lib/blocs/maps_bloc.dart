@@ -66,7 +66,6 @@ class MapsBloc {
     });
     _addMapMarkersForVehicles(vehicles);
 
-    onCenterViewPressed();
   }
 
 

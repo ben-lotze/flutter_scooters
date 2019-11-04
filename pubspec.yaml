@@ -35,12 +35,6 @@ dependencies:
   rxdart: ^0.22.2
 
 
-
-  # private packages, TODO: must be public or in module or class in code
-#  rest_tools:
-#    path: /Users/lotze/Dev/Projects/flutter/rest_tools
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

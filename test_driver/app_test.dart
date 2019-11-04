@@ -5,18 +5,12 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'dart:io';
-
 import 'package:flutter_driver/flutter_driver.dart';
 import 'package:test/test.dart';
 
 
 
 void main() {
-
-
-  // I rely on the fact that Google has its own tests of the Flutter maps plugin, so I do not test
-  // that markers appear/disappear when adding/removing them to/from maps controller
 
   group("driver tests", () {
 
@@ -25,7 +19,7 @@ void main() {
     // Connect to the Flutter driver before running any tests.
     setUpAll(() async {
 
-      // TODO: ANDROID_HOME path needs to be set up (add to readme)
+      // TODO: ANDROID_HOME path needs to be set up, but getting automatic permissions does not work
       // not working, see https://github.com/flutter/flutter/issues/12561#issuecomment-448999726
 //      final Map<String, String> envVars = Platform.environment;
 //      String adbPath;
@@ -42,9 +36,9 @@ void main() {
       flutterDriver = await FlutterDriver.connect();
 
       print("----------------------------------------------------------------------------------------------------------");
-      print("Please grant permission now! You have 10 seconds before the testing starts. Sorry, I found no other way...");
+      print("Please grant permission now! You have 15 seconds before the testing starts. Sorry, I found no other way...");
       print("----------------------------------------------------------------------------------------------------------");
-      await Future.delayed(Duration(seconds: 10), () {});
+      await Future.delayed(Duration(seconds: 15), () {});
     });
 
     // Close the connection to the driver after the tests have completed.
@@ -76,19 +70,21 @@ void main() {
     test("tap on layers button opens map details popup", () async {
 
       // tap layer button
-      // find buttons that need to be tapped
 //    final layerButtonFinder = find.byValueKey("map_layers_button");   // TODO: bug when using key to find widget? see note in MapLayersButton
       final layerButtonFinder = find.byTooltip("Change map layers and settings");
       await flutterDriver.tap(layerButtonFinder);
       await Future.delayed(Duration(seconds: 2), () {});
 
 
-      // find map types buttons
+      // find map types buttons in popup
       final normalViewBtnFinder = find.byTooltip("Map will show an ordinary normal map");
       final satelliteViewBtnFinder = find.byTooltip("Map will show sattelite images");
       final terrainViewBtnFinder = find.byTooltip("Map will show a normal map enhanced with some terrain info");
       // find map details buttons
-      final trafficBtnFinder = find.byTooltip("Switch traffic on or off");
+      final transportBtnFinder = find.byTooltip("Would show public transportation layer (not implemented)");
+      final trafficBtnFinder = find.byTooltip("Would show traffic layer (not implemented)");
+      final biktBtnFinder = find.byTooltip("Would show layer for bike lanes (not implemented)");
+
 
 
       // press all buttons in the details popup
@@ -99,14 +95,22 @@ void main() {
       await flutterDriver.tap(terrainViewBtnFinder);
       await Future.delayed(Duration(seconds: 2), () {});
 
-      // not yet fully implemented in the bloc/view, so no result to test
+      // switch on
+      await flutterDriver.tap(transportBtnFinder);
+      await Future.delayed(Duration(seconds: 1), () {});
       await flutterDriver.tap(trafficBtnFinder);
-      await Future.delayed(Duration(seconds: 2), () {});
+      await Future.delayed(Duration(seconds: 1), () {});
+      await flutterDriver.tap(biktBtnFinder);
+      await Future.delayed(Duration(seconds: 1), () {});
+      // switch off
+      await flutterDriver.tap(transportBtnFinder);
+      await Future.delayed(Duration(seconds: 1), () {});
       await flutterDriver.tap(trafficBtnFinder);
-      await Future.delayed(Duration(seconds: 2), () {});
+      await Future.delayed(Duration(seconds: 1), () {});
+      await flutterDriver.tap(biktBtnFinder);
+      await Future.delayed(Duration(seconds: 1), () {});
 
       // TODO: test bloc -> settings changes? bloc needs to be injected
-
 
       // close popup, does not work, there is no back button in the UI
 //      await flutterDriver.tap(find.pageBack());

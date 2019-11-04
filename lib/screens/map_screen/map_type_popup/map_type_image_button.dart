@@ -32,7 +32,6 @@ class MapTypeImageButton extends StatelessWidget {
     MapsBloc mapsBloc = Provider.of<MapsBloc>(this.context);
     return StreamBuilder<MapState>(
         stream: mapsBloc.mapStateStream,
-        // TODO: initial data?
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Container(child: Center(child: Text("Error")));

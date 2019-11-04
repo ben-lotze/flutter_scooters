@@ -49,16 +49,16 @@ class MapDetailsImageButton extends StatelessWidget {
                 Scaffold.of(this.context).showSnackBar(SnackBar(content: Text(tooltip),));
                 // activate/deactivate map details
                 if (mapDetailsAreActivated) {
-                  print("removing $mapDetails");
                   mapsBloc.removeMapDetails(mapDetails);
                 }
                 else {
-                  print("adding $mapDetails");
                   mapsBloc.addMapDetails(mapDetails);
                 }
 
                 // additional actions as specified by widget params
-                this.onTap();
+                if (this.onTap != null) {
+                  this.onTap();
+                }
               },
             );
           }
