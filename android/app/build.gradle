@@ -56,16 +56,8 @@ flutter {
 
 dependencies {
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0'      // was 1.1.0
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'      // was 3.1.0
-//    implementation 'com.google.firebase:firebase-analytics:16.0.5'      // 17.2.0 is newest, QR uses 16.0.5
-
-//    implementation 'com.google.android.gms:play-services-basement:16.1.0'   // 16.1.0
-//    implementation 'com.google.android.gms:play-services-measurement-base:16.0.4'
-//    implementation 'com.android.support:support-annotations:28.0.0'
-
-//    implementation 'androidx.appcompat:appcompat:1.1.0'     // 1.0.2
-//    implementation 'androidx.annotation:annotation:1.1.0'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
 //apply plugin: 'com.google.gms.google-services'

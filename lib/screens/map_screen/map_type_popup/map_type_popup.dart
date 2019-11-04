@@ -76,7 +76,7 @@ class MapTypePopup extends StatelessWidget {
               children: <Widget>[
 
                 MapDetailsImageButton(
-                  text: "Public transport",
+                  text: "Transport",
                   tooltip: "Would show public transportation layer (not implemented)",
                   imgAsset: "assets/img_icons/map_details_public_transport.jpg",
                   mapDetails: MapDetails.PUBLIC_TRANSPORT,
@@ -90,7 +90,7 @@ class MapTypePopup extends StatelessWidget {
                   context: parentContext,
                 ),
                 MapDetailsImageButton(
-                  text: "Bike lanes",
+                  text: "Bike",
                   tooltip: "Would show layer for bike lanes (not implemented)",
                   imgAsset: "assets/img_icons/map_details_bike.jpg",
                   mapDetails: MapDetails.BIKE_LANES,

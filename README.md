@@ -45,14 +45,30 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 <img src="readme_resources/swipe_to_confirm.gif" width="360"/>
 
 
-#### Map types
-
+#### Map types / details
+<img src="readme_resources/maps_details_1.png" width="360"/>   <img src="readme_resources/maps_details_2.png" width="360"/>
 
 
 #### User manual
-
+<img src="readme_resources/tutorial_1.png" width="360"/>   <img src="readme_resources/tutorial_2.png" width="360"/>   <img src="readme_resources/tutorial_3.png" width="360"/>   <img src="readme_resources/tutorial_4.png" width="360"/>
 
 
 #### Some more screenshots
 <img src="readme_resources/selecting_markers_360.gif" width="360"/>
 
+
+
+
+## Open problems:
+* animations for overlay buttons when vehicle info popup opens (are currently hidden)
+* A click on a marker does not center the map (this was intentional, since this could be confusing). But the map should be centered if the marker would be hidden by the info popup.
+* unfocus search bar when map is tapped
+* more integration tests (especially for MapsBloc)
+
+
+## What would be nice (with more time):
+* swipe indicator for tutorial
+* startup/loading screen
+* persistance: i.e. last position, no need to have a random start position for camera movement like LatLng(0,0)
+* Navigation / PlacesAPI
+* There are some things about the Maps plugin that are difficult to handle. Traffic layer for example does not repaint if it has not been set on creation time, even when in StreamBuilder.
