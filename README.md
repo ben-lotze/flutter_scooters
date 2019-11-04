@@ -1,17 +1,13 @@
 # Circ Flutter Challenge
 
-## To get this up and running
-* Google maps API keys are not provided inside this repository. They have to be inserted into Gradle.
-* Integration tests: Due to limitations in Flutter framework the permissions need to be granted on test startup.
-* Integration tests can be started with **`flutter drive --target=test_driver/app.dart`** from the project directory.
-
-
 ## Technical details
 * UI and business logic are decoupled by using the BLoC pattern.
 * Developed and tested with Flutter dev channel (1.10.14)
 * Targeting Android API level >= 16
 
-
+## Additional integration tests
+* Due to limitations in Flutter framework the permissions need to be granted on test startup.
+* Integration tests can be started with **`flutter drive --target=test_driver/app.dart`** from the project directory. 
 
 ## Additionally implemented features
 
