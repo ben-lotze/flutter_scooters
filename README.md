@@ -1,9 +1,6 @@
 # Circ Flutter Challenge
 
-Challenge app to be hired at Circ.
-
 ## To get this up and running
-
 * Google maps API keys are not provided inside this repository. They have to be inserted into Gradle.
 * Integration tests: Due to limitations in Flutter framework the permissions need to be granted on test startup.
 * Integration tests can be started with **`flutter drive --target=test_driver/app.dart`** from the project directory.
@@ -12,7 +9,7 @@ Challenge app to be hired at Circ.
 ## Technical details
 * UI and business logic are decoupled by using the BLoC pattern.
 * Developed and tested with Flutter dev channel (1.10.14)
-* Targeting Android API level >= 16A
+* Targeting Android API level >= 16
 
 
 
@@ -54,21 +51,25 @@ Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 
 
 #### Some more screenshots
-<img src="readme_resources/selecting_markers_360.gif" width="360"/>
+<img src="readme_resources/selecting_markers_360.gif" width="360"/>  <img src="readme_resources/side_drawer.png" width="360"/>
 
 
 
 
 ## Open problems:
-* animations for overlay buttons when vehicle info popup opens (are currently hidden)
+* Animations for overlay buttons when vehicle info popup opens (are currently hidden)
 * A click on a marker does not center the map (this was intentional, since this could be confusing). But the map should be centered if the marker would be hidden by the info popup.
-* unfocus search bar when map is tapped
-* more integration tests (especially for MapsBloc)
+* Unfocus search bar when map is tapped
+* More integration and unit tests (especially for MapsBloc)
+* Startup delay: app should start much faster.
+* Integration test: Permissions need to be granted on each test startup by hand (seems to be a Flutter Driver limitation)
 
 
-## What would be nice (with more time):
-* swipe indicator for tutorial
-* startup/loading screen
-* persistance: i.e. last position, no need to have a random start position for camera movement like LatLng(0,0)
+## Possible roadmap:
+* Theme for colors, font sizes, styles etc.
+* Swipe indicator for tutorial
+* Startup/loading screen
+* Persistence: i.e. last position, no need to have a random start position for camera movement like LatLng(0,0)
 * Navigation / PlacesAPI
 * There are some things about the Maps plugin that are difficult to handle. Traffic layer for example does not repaint if it has not been set on creation time, even when in StreamBuilder.
+* Add business logic to lock/unlock (with running timer in the background) which results in a ride history.

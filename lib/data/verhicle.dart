@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-// TODO better vehicle doc
 /// Currently all vehicles are E-scooters. More attributes are necessary to allow for more vehicle types.
 class Vehicle {
   /// unique id of a vehicle (Circ-wide unique)

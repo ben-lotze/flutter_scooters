@@ -58,6 +58,7 @@ class _SearchBarState extends State<SearchBar> {
                   // main menu
                   IconButton(
                     icon: Icon(Icons.menu, color: Colors.black54,),
+                    tooltip: "Main menu",
                     onPressed: () => Scaffold.of(context).openDrawer(),
                   ),
 
@@ -96,9 +97,10 @@ class _SearchBarState extends State<SearchBar> {
                   // mic button
                   IconButton(
                     icon: Icon(Icons.mic,color: Colors.black54),
+                    tooltip: "Speach input (not implemented)",
                     onPressed: () {
                       Scaffold.of(context).hideCurrentSnackBar(reason: SnackBarClosedReason.dismiss);
-                      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Speak to the machine (not implemented)"),));
+                      Scaffold.of(context).showSnackBar(SnackBar(content: Text("Speak to the machine (not implemented)"), ));
                     },
                   ),
 

@@ -6,7 +6,6 @@ class LeftDrawerTopHeader extends StatelessWidget {
     return Container(
       height: 150,
       color: Theme.of(context).primaryColor,
-
     );
   }
 }

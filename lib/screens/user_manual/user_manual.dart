@@ -1,17 +1,3 @@
-/*
-one page with multiple images for
-- How to ride?
-- Circ Scooter (scooter info)
-- About Circ -> why? goals, ...
-
-
-
-alternative design ideas:
-- top: 3 images as tabs -> content is to be scrolled (indicator circles)
- */
-
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

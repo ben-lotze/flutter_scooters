@@ -35,10 +35,10 @@ void main() {
 
       flutterDriver = await FlutterDriver.connect();
 
-      print("----------------------------------------------------------------------------------------------------------");
-      print("Please grant permission now! You have 15 seconds before the testing starts. Sorry, I found no other way...");
-      print("----------------------------------------------------------------------------------------------------------");
-      await Future.delayed(Duration(seconds: 15), () {});
+      print("------------------------------------------------------------------------------------------------");
+      print("Please grant permission quickly before the actual testing starts. Sorry, I found no other way...");
+      print("------------------------------------------------------------------------------------------------");
+//      await Future.delayed(Duration(seconds: 5), () {});    // no good idea, app may be closed from system/driver
     });
 
     // Close the connection to the driver after the tests have completed.
@@ -54,7 +54,7 @@ void main() {
 
       final centerViewButtonFinder = find.byTooltip("Center map view to your current position");
       await flutterDriver.tap(centerViewButtonFinder);
-      await Future.delayed(Duration(seconds: 3), () {});
+      await Future.delayed(Duration(seconds: 2), () {});
 
       final zoomInButtonFinder = find.byTooltip("Zoom in");
       await flutterDriver.tap(zoomInButtonFinder);

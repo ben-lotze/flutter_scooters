@@ -5,7 +5,6 @@ import 'package:circ_flutter_challenge/screens/user_manual/user_manual.dart';
 import 'package:flutter/material.dart';
 
 
-
 class VehicleInfoPopup extends StatelessWidget {
 
   final Vehicle vehicle;

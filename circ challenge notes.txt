@@ -1,19 +1,14 @@
 MUST TODO
 - API Keys + Restrictions
-- alle print weg
 - alle Importe checken
 - cleanup
 	- gradle
-	- google services json
 - alles in neues repo: circ_flutter (wegen Keys)
+- REST test der Exception wirft (alle HTTP cases testen)
 
 
-
-OPTIMAL
-- Animationen für Buttons
-- Tutorial: Seiten-Anzeige
-- search bar unfocus (map tap)
-
+OK
+- Was tun mit WIdget Tests OLD ? --> einfach egal
 
 ERLEDIGT
 - fehlende tooltips
@@ -24,6 +19,10 @@ ERLEDIGT
 	- Account
 	- Settings
 	oder nur: Rides (Bildschirm kopieren), oben im Drawer: Settings + Profil
+cleanup
+- google services json
+- alle print weg
+
 
 
 ----------------
@@ -291,10 +290,18 @@ calculateDistance
 
 removed TODOS usw
 
+// TODO: zoom state --> should be updated from map via change of camera position (callback), same for zoomOut
+// gilt auch für Position!!! -> bei resetNorth sprint er immer zu center
 
 	// map bloc
   // TODO: method like onMapPositionChanged --> may need new search (depending on which area has been searched)!!!!!!!!!!!!!!!!!!!!!!!
   // definitivly add this? but can not be searched from endpoint! --> just assume there was such a functionality
+
+_mapStateSubject = BehaviorSubject.seeded(MapState());  // TODO: with defaults, and last position (persisted)
+
+
+// TODO: click on marker should not center map (that is confusing for the user), only change camera if marker would be hidden
+
 
 
 
@@ -324,6 +331,25 @@ drag to unlock (full width) --> better name: drag to reserve
 
 
 
+
+MAP VIEW
+// TODO also put map into separate class
+// TODO: maybe StreamBuilder is not necessary here? (is this ever refreshed?)
+// TODO: needs to  be refreshed based on current position --> Bloc with current position etc + StreamBuilder?
+// TODO callback to Block: map tapped --> unfocus input, revert to Maps default overlays (in case they changed)
+
+
+// TODO: do not always use default
+
+
+
+Vehicle popup
+// TODO: should update bloc or something -> TextINput needs to know -> also close this
+  // TODO: use PersistentBottomSheetController	
+
+
+
+
   /*
   2nd bloc for navigation and auto complete (search)?
   MapsNavigationBloc
@@ -333,6 +359,30 @@ drag to unlock (full width) --> better name: drag to reserve
 
 
    */
+
+
+
+
+Android dependencies
+//    implementation 'com.google.firebase:firebase-analytics:16.0.5'      // 17.2.0 is newest, QR uses 16.0.5
+
+//    implementation 'com.google.android.gms:play-services-basement:16.1.0'   // 16.1.0
+//    implementation 'com.google.android.gms:play-services-measurement-base:16.0.4'
+//    implementation 'com.android.support:support-annotations:28.0.0'
+
+//    implementation 'androidx.appcompat:appcompat:1.1.0'     // 1.0.2
+//    implementation 'androidx.annotation:annotation:1.1.0'
+
+
+
+Tutorial
+one page with multiple images for
+- How to ride?
+- Circ Scooter (scooter info)
+- About Circ -> why? goals, ...
+alternative design ideas:
+- top: 3 images as tabs -> content is to be scrolled (indicator circles)
+ 
 
 
 
