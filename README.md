@@ -25,7 +25,9 @@ Challenge app to be hired at Circ.
 #### QR code scanner
 
 Scanning a QR code opens the info popup to unlock the vehicle:
+
 <img src="readme_resources/scanner_button.gif" width="360"/>   <img src="readme_resources/scanner_opens_info_popup.gif" width="360"/> 
+
 
 Scan any of these QR codes to simulate scanning a scooter (vehicles 1-6):
 
